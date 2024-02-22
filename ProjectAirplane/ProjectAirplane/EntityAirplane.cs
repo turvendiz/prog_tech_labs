@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjectAirplane;
+﻿namespace ProjectAirplane;
 
 /// <summary>
 /// Класс-сущность "Самолет"
@@ -32,19 +26,14 @@ public class EntityAirplane
   public Color AdditionalColor { get; private set; }
 
   /// <summary>
-  /// Признак (опция) наличия обвеса
+  /// Признак (опция) наличия первой пары двигателей
   /// </summary>
-  public bool BodyKit { get; private set; }
+  public bool EngineFirst { get; private set; }
 
   /// <summary>
-  /// Признак (опция) наличия антикрыла
+  /// Признак (опция) наличия второй пары двигателей
   /// </summary>
-  public bool Wing { get; private set; }
-
-  /// <summary>
-  /// Признак (опция) наличия гоночной полосы
-  /// </summary>
-  public bool SportLine { get; private set; }
+  public bool EngineSecond { get; private set; }
 
   /// <summary>
   /// Шаг перемещения самолета
@@ -58,17 +47,15 @@ public class EntityAirplane
   /// <param name="weight">Вес самолета</param>
   /// <param name="bodyColor">Основной цвет</param>
   /// <param name="additionalColor">Дополнительный цвет</param>
-  /// <param name="bodyKit">Признак наличия обвеса</param>
-  /// <param name="wing">Признак наличия антикрыла</param>
-  /// <param name="sportLine">Признак наличия гоночной полосы</param>
-  public void Init(int speed, double weight, Color bodyColor, Color additionalColor, bool bodyKit, bool wing, bool sportLine)
+  /// <param name="engineFirst">Признак наличия первой пары двигателей</param>
+  /// <param name="engineSecond">Признак наличия второй пары двигателей</param>
+  public void Init(int speed, double weight, Color bodyColor, Color additionalColor, bool engineFirst, bool engineSecond)
   {
     Speed = speed;
     Weight = weight;
     BodyColor = bodyColor;
     AdditionalColor = additionalColor;
-    BodyKit = bodyKit;
-    Wing = wing;
-    SportLine = sportLine;
+    EngineFirst = engineFirst;
+    EngineSecond = engineSecond;
   }
 }

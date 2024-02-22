@@ -36,8 +36,7 @@ public partial class FormAirplane : Form
     {
       return;
     }
-    Bitmap bmp = new(pictureBoxAirplane.Width,
-    pictureBoxAirplane.Height);
+    Bitmap bmp = new(pictureBoxAirplane.Width, pictureBoxAirplane.Height);
     Graphics gr = Graphics.FromImage(bmp);
     _drawingAirplane.DrawTransport(gr);
     pictureBoxAirplane.Image = bmp;
@@ -53,13 +52,12 @@ public partial class FormAirplane : Form
     Random random = new();
     _drawingAirplane = new DrawingAirplane();
     _drawingAirplane.Init(
-      random.Next(100, 300),
-      random.Next(1000, 3000),
-      Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-      Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
-      Convert.ToBoolean(random.Next(0, 2)),
-      Convert.ToBoolean(random.Next(0, 2)),
-      Convert.ToBoolean(random.Next(0, 2))
+      speed: random.Next(100, 300),
+      weight: random.Next(1000, 3000),
+      bodyColor: Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+      additionalColor: Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+      engineFirst: Convert.ToBoolean(random.Next(0, 2)),
+      engineSecond: Convert.ToBoolean(random.Next(0, 2))
     );
 
     _drawingAirplane.SetPictureSize(pictureBoxAirplane.Width, pictureBoxAirplane.Height);

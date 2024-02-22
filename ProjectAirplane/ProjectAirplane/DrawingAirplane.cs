@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace ProjectAirplane;
+﻿namespace ProjectAirplane;
 
 public class DrawingAirplane
 {
@@ -21,21 +15,21 @@ public class DrawingAirplane
   /// </summary>
   private int? _pictureHeight;
   /// <summary>
-  /// Левая координата прорисовки автомобиля
+  /// Левая координата прорисовки самолета
   /// </summary>
   private int? _startPosX;
   /// <summary>
-  /// Верхняя кооридната прорисовки автомобиля
+  /// Верхняя кооридната прорисовки самолета
   /// </summary>
   private int? _startPosY;
   /// <summary>
-  /// Ширина прорисовки автомобиля
+  /// Ширина прорисовки самолета
   /// </summary>
-  private readonly int _drawningCarWidth = 120;
+  private readonly int _drawningAirplaneWidth = 85;
   /// <summary>
-  /// Высота прорисовки автомобиля
+  /// Высота прорисовки самолета
   /// </summary>
-  private readonly int _drawningCarHeight = 120;
+  private readonly int _drawningAirplaneHeight = 74;
   /// <summary>
   /// Инициализация свойств
   /// </summary>
@@ -43,15 +37,12 @@ public class DrawingAirplane
   /// <param name="weight">Вес</param>
   /// <param name="bodyColor">Основной цвет</param>
   /// <param name="additionalColor">Дополнительный цвет</param>
-  /// <param name="bodyKit">Признак наличия обвеса</param>
-  /// <param name="wing">Признак наличия антикрыла</param>
-  /// <param name="sportLine">Признак наличия гоночной полосы</param>
-  public void Init(int speed, double weight, Color bodyColor, Color
-  additionalColor, bool bodyKit, bool wing, bool sportLine)
+  /// <param name="engineFirst">Признак наличия первой пары двигателей</param>
+  /// <param name="engineSecond">Признак наличия второй пары двигателей</param>
+  public void Init(int speed, double weight, Color bodyColor, Color additionalColor, bool engineFirst, bool engineSecond)
   {
     EntityAirplane = new EntityAirplane();
-    EntityAirplane.Init(speed, weight, bodyColor, additionalColor,
-    bodyKit, wing, sportLine);
+    EntityAirplane.Init(speed, weight, bodyColor, additionalColor, engineFirst, engineSecond);
     _pictureWidth = null;
     _pictureHeight = null;
     _startPosX = null;
@@ -65,8 +56,11 @@ public class DrawingAirplane
   /// <returns>true - границы заданы, false - проверка не пройдена, нельзя разместить объект в этих размерах</returns>
   public bool SetPictureSize(int width, int height)
   {
-    // TODO проверка, что объект "влезает" в размеры поля
+    // проверка, что объект "влезает" в размеры поля
     // если влезает, сохраняем границы и корректируем позицию объекта, если она была уже установлена
+    if (width < _drawningAirplaneWidth || height < _drawningAirplaneHeight)
+      return false;
+
     _pictureWidth = width;
     _pictureHeight = height;
     return true;
@@ -78,12 +72,22 @@ public class DrawingAirplane
   /// <param name="y">Координата Y</param>
   public void SetPosition(int x, int y)
   {
+    var endx = x + _drawningAirplaneWidth;
+    var endy = y + _drawningAirplaneHeight;
+
     if (!_pictureHeight.HasValue || !_pictureWidth.HasValue)
     {
       return;
     }
-    // TODO если при установке объекта в эти координаты, он будет "выходить" за границы формы
+    // если при установке объекта в эти координаты, он будет "выходить" за границы формы
     // то надо изменить координаты, чтобы он оставался в этих границах
+    if (x > _pictureWidth - _drawningAirplaneWidth || 
+        y > _pictureHeight - _drawningAirplaneHeight ||
+        x < 0 || y < 0)
+    {
+      x = 0;
+      y = 0;
+    }
     _startPosX = x;
     _startPosY = y;
   }
@@ -94,8 +98,7 @@ public class DrawingAirplane
   /// <returns>true - перемещене выполнено, false - перемещение невозможно</returns>
   public bool MoveTransport(DirectionType direction)
   {
-    if (EntityAirplane == null || !_startPosX.HasValue ||
-    !_startPosY.HasValue)
+    if (EntityAirplane == null || !_startPosX.HasValue || !_startPosY.HasValue)
     {
       return false;
     }
@@ -103,7 +106,7 @@ public class DrawingAirplane
     {
       //влево
       case DirectionType.Left:
-        if (_startPosX.Value - EntityAirplane.Step > -20)
+        if (_startPosX - EntityAirplane.Step > 0)
         {
           _startPosX -= (int)EntityAirplane.Step;
         }
@@ -111,7 +114,7 @@ public class DrawingAirplane
 
       //вверх
       case DirectionType.Up:
-        if (_startPosY.Value - EntityAirplane.Step > 25)
+        if (_startPosY.Value - EntityAirplane.Step > 0)
         {
           _startPosY -= (int)EntityAirplane.Step;
         }
@@ -119,7 +122,7 @@ public class DrawingAirplane
 
       // вправо
       case DirectionType.Right:
-        if (_startPosX.Value + EntityAirplane.Step < 910)
+        if (_startPosX.Value + EntityAirplane.Step < _pictureWidth - _drawningAirplaneWidth)
         {
           _startPosX += (int)EntityAirplane.Step;
         }
@@ -127,7 +130,7 @@ public class DrawingAirplane
 
       //вниз
       case DirectionType.Down:
-        if (_startPosY.Value + EntityAirplane.Step < 525)
+        if (_startPosY.Value + EntityAirplane.Step < _pictureHeight - _drawningAirplaneHeight)
         {
           _startPosY += (int)EntityAirplane.Step;
         }
@@ -151,95 +154,93 @@ public class DrawingAirplane
     Pen pen = new(Color.Black);
     Brush additionalBrush = new SolidBrush(EntityAirplane.AdditionalColor);
 
-    // обвесы
-    if (EntityAirplane.BodyKit)
+    if (EntityAirplane.EngineFirst)
     {
-      g.DrawRectangle(pen, _startPosX.Value + 65, _startPosY.Value - 14, 5, 4);
-      g.DrawRectangle(pen, _startPosX.Value + 65, _startPosY.Value + 35, 5, 4);
+      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 11, 5, 4);
+      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 60, 5, 4);
 
-      g.FillRectangle(additionalBrush, _startPosX.Value + 65, _startPosY.Value - 14, 5, 4);
-      g.FillRectangle(additionalBrush, _startPosX.Value + 65, _startPosY.Value + 35, 5, 4);
+      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 11, 5, 4);
+      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 60, 5, 4);
 
     }
-    if (EntityAirplane.Wing)
+    if (EntityAirplane.EngineSecond)
     {
-      g.DrawRectangle(pen, _startPosX.Value + 65, _startPosY.Value - 5, 5, 4);
-      g.DrawRectangle(pen, _startPosX.Value + 65, _startPosY.Value + 26, 5, 4);
+      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 20, 5, 4);
+      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 51, 5, 4);
 
-      g.FillRectangle(additionalBrush, _startPosX.Value + 65, _startPosY.Value - 5, 5, 4);
-      g.FillRectangle(additionalBrush, _startPosX.Value + 65, _startPosY.Value + 26, 5, 4);
+      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 20, 5, 4);
+      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 51, 5, 4);
     }
 
 
     //границы самолета
-
-    g.DrawRectangle(pen, _startPosX.Value + 20, _startPosY.Value + 4, 70, 15);
+    g.DrawRectangle(pen, _startPosX.Value, _startPosY.Value + 29, 70, 15);
     g.DrawPolygon(pen, new Point[] {
-      new Point(_startPosX.Value + 90, _startPosY.Value + 4),
-      new Point(_startPosX.Value + 90, _startPosY.Value + 19),
-      new Point(_startPosX.Value + 105, _startPosY.Value + 12)
+      new Point(_startPosX.Value + 70, _startPosY.Value + 29),
+      new Point(_startPosX.Value + 70, _startPosY.Value + 44),
+      new Point(_startPosX.Value + 85, _startPosY.Value + 37)
     });
     g.FillPolygon(new SolidBrush(Color.Black), new Point[] {
-      new Point(_startPosX.Value + 90, _startPosY.Value + 4),
-      new Point(_startPosX.Value + 90, _startPosY.Value + 19),
-      new Point(_startPosX.Value + 105, _startPosY.Value + 12)
-    });
+       new Point(_startPosX.Value + 70, _startPosY.Value + 29),
+       new Point(_startPosX.Value + 70, _startPosY.Value + 44),
+       new Point(_startPosX.Value + 85, _startPosY.Value + 37)
+     });
     // Нарисовать трапецию левого крыла
     g.DrawPolygon(pen, new Point[] {
-      new Point(_startPosX.Value + 60, _startPosY.Value - 25),  // Левая верхняя точка
-      new Point(_startPosX.Value + 65, _startPosY.Value - 25),  // Правая верхняя точка
-      new Point(_startPosX.Value + 65, _startPosY.Value + 4),   // Правая нижняя точка
-      new Point(_startPosX.Value + 45, _startPosY.Value + 4)    // Левая нижняя точка
-    });
+       new Point(_startPosX.Value + 40, _startPosY.Value),
+       new Point(_startPosX.Value + 45, _startPosY.Value),
+       new Point(_startPosX.Value + 45, _startPosY.Value +29),
+       new Point(_startPosX.Value + 25, _startPosY.Value + 29)
+     });
     // Нарисовать трапецию правого крыла
     g.DrawPolygon(pen, new Point[] {
-      new Point(_startPosX.Value + 60, _startPosY.Value + 49),  // Левая верхняя точка
-      new Point(_startPosX.Value + 65, _startPosY.Value + 49),  // Правая верхняя точка
-      new Point(_startPosX.Value + 65, _startPosY.Value + 19),  // Правая нижняя точка
-      new Point(_startPosX.Value + 45, _startPosY.Value + 19)   // Левая нижняя точка
-    });
+       new Point(_startPosX.Value + 40, _startPosY.Value + 74),
+       new Point(_startPosX.Value + 45, _startPosY.Value + 74),
+       new Point(_startPosX.Value + 45, _startPosY.Value + 44),
+       new Point(_startPosX.Value + 25, _startPosY.Value + 44)
+     });
     // Нарисовать трапецию левого хвоста
     g.DrawPolygon(pen, new Point[] {
-      new Point(_startPosX.Value + 20, _startPosY.Value - 10),  // Левая верхняя точка
-      new Point(_startPosX.Value + 27, _startPosY.Value),  // Правая верхняя точка
-      new Point(_startPosX.Value + 27, _startPosY.Value + 4),   // Правая нижняя точка
-      new Point(_startPosX.Value + 20, _startPosY.Value + 4)    // Левая нижняя точка
-    });
+       new Point(_startPosX.Value, _startPosY.Value + 15),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 25),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 29),
+       new Point(_startPosX.Value, _startPosY.Value + 29)
+     });
     // Нарисовать трапецию правого хвоста
     g.DrawPolygon(pen, new Point[] {
-      new Point(_startPosX.Value + 20, _startPosY.Value + 33),  // Левая верхняя точка
-      new Point(_startPosX.Value + 27, _startPosY.Value + 24),  // Правая верхняя точка
-      new Point(_startPosX.Value + 27, _startPosY.Value + 19),   // Правая нижняя точка
-      new Point(_startPosX.Value + 20, _startPosY.Value + 19)    // Левая нижняя точка
-    });
+       new Point(_startPosX.Value, _startPosY.Value + 58),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 49),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 44),
+       new Point(_startPosX.Value, _startPosY.Value + 44)
+     });
 
     //Кабина
     Brush br = new SolidBrush(EntityAirplane.BodyColor);
-    g.FillRectangle(br, _startPosX.Value + 20, _startPosY.Value + 4, 70, 15);
+    g.FillRectangle(br, _startPosX.Value, _startPosY.Value + 29, 70, 15);
 
     g.FillPolygon(br, new Point[] {
-      new Point(_startPosX.Value + 60, _startPosY.Value - 25),
-      new Point(_startPosX.Value + 65, _startPosY.Value - 25),
-      new Point(_startPosX.Value + 65, _startPosY.Value + 4),
-      new Point(_startPosX.Value + 45, _startPosY.Value + 4)
-    });
+       new Point(_startPosX.Value + 40, _startPosY.Value),
+       new Point(_startPosX.Value + 45, _startPosY.Value),
+       new Point(_startPosX.Value + 45, _startPosY.Value + 29),
+       new Point(_startPosX.Value + 25, _startPosY.Value + 29)
+     });
     g.FillPolygon(br, new Point[] {
-      new Point(_startPosX.Value + 60, _startPosY.Value + 49),
-      new Point(_startPosX.Value + 65, _startPosY.Value + 49),
-      new Point(_startPosX.Value + 65, _startPosY.Value + 19),
-      new Point(_startPosX.Value + 45, _startPosY.Value + 19)
-    });
+       new Point(_startPosX.Value + 40, _startPosY.Value + 74),
+       new Point(_startPosX.Value + 45, _startPosY.Value + 74),
+       new Point(_startPosX.Value + 45, _startPosY.Value + 44),
+       new Point(_startPosX.Value + 25, _startPosY.Value + 44)
+     });
     g.FillPolygon(additionalBrush, new Point[] {
-      new Point(_startPosX.Value + 20, _startPosY.Value - 10),
-      new Point(_startPosX.Value + 27, _startPosY.Value),
-      new Point(_startPosX.Value + 27, _startPosY.Value + 4),
-      new Point(_startPosX.Value + 20, _startPosY.Value + 4)
-    });
+       new Point(_startPosX.Value, _startPosY.Value + 15),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 25),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 29),
+       new Point(_startPosX.Value, _startPosY.Value + 29)
+     });
     g.FillPolygon(additionalBrush, new Point[] {
-      new Point(_startPosX.Value + 20, _startPosY.Value + 33),
-      new Point(_startPosX.Value + 27, _startPosY.Value + 24),
-      new Point(_startPosX.Value + 27, _startPosY.Value + 19),
-      new Point(_startPosX.Value + 20, _startPosY.Value + 19)
-    });
+       new Point(_startPosX.Value, _startPosY.Value + 58),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 49),
+       new Point(_startPosX.Value + 7, _startPosY.Value + 44),
+       new Point(_startPosX.Value, _startPosY.Value + 44)
+     });
   }
 }
