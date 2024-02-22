@@ -1,12 +1,10 @@
-﻿namespace ProjectAirplane.Drawings;
+﻿namespace ProjectAirplane.MovementStrategy;
 
-public enum DirectionType
+/// <summary>
+/// Направление перемещения
+/// </summary>
+public enum MovementDirection
 {
-  /// <summary>
-  /// Неизвестное направление
-  /// </summary>
-  Unknow = -1,
-
   /// <summary>
   /// Вверх
   /// </summary>

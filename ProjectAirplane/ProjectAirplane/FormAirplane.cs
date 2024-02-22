@@ -1,13 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
-using ProjectAirplane.Drawings;
+﻿using ProjectAirplane.Drawings;
+using ProjectAirplane.MovementStrategy;
 
 namespace ProjectAirplane;
 
@@ -22,10 +14,17 @@ public partial class FormAirplane : Form
   private DrawingAirplane? _drawingAirplane;
 
   /// <summary>
-  /// Конструктор
+  /// Стратегия перемещения
+  /// </summary>
+  private AbstractStrategy? _strategy;
+
+  /// <summary>
+  /// Конструктор формы
+  /// </summary>
   public FormAirplane()
   {
     InitializeComponent();
+    _strategy = null;
   }
 
   /// <summary>
@@ -70,10 +69,10 @@ public partial class FormAirplane : Form
       default:
         return;
     }
-    _drawingAirplane.SetPictureSize(pictureBoxAirplane.Width,pictureBoxAirplane.Height);
+    _drawingAirplane.SetPictureSize(pictureBoxAirplane.Width, pictureBoxAirplane.Height);
     _drawingAirplane.SetPosition(random.Next(10, 100), random.Next(10, 100));
-    //_strategy = null;
-    //comboBoxStrategy.Enabled = true;
+    _strategy = null;
+    comboBoxStrategy.Enabled = true;
     Draw();
   }
 
@@ -107,28 +106,62 @@ public partial class FormAirplane : Form
     switch (name)
     {
       case "btnUp":
-        result =
-        _drawingAirplane.MoveTransport(DirectionType.Up);
+        result = _drawingAirplane.MoveTransport(DirectionType.Up);
         break;
 
       case "btnDown":
-        result =
-        _drawingAirplane.MoveTransport(DirectionType.Down);
+        result = _drawingAirplane.MoveTransport(DirectionType.Down);
         break;
 
       case "btnLeft":
-        result =
-        _drawingAirplane.MoveTransport(DirectionType.Left);
+        result = _drawingAirplane.MoveTransport(DirectionType.Left);
         break;
 
       case "btnRight":
-        result =
-        _drawingAirplane.MoveTransport(DirectionType.Right);
+        result = _drawingAirplane.MoveTransport(DirectionType.Right);
         break;
     }
     if (result)
     {
       Draw();
+    }
+  }
+
+  /// <summary>
+  /// Обработка нажатия кнопки "Шаг"
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonStrategyStep_Click(object sender, EventArgs e)
+  {
+    if (_drawingAirplane == null)
+    {
+      return;
+    }
+
+    if (comboBoxStrategy.Enabled)
+    {
+      _strategy = comboBoxStrategy.SelectedIndex switch
+      {
+        0 => new MoveToCenter(),
+        1 => new MoveToBorder(),
+        _ => null,
+      };
+      if (_strategy == null) { return; }
+
+      _strategy.SetData(new MoveableAirplane(_drawingAirplane), pictureBoxAirplane.Width, pictureBoxAirplane.Height);
+    }
+
+    if (_strategy == null) { return; }
+
+    comboBoxStrategy.Enabled = false;
+    _strategy.MakeStep();
+    Draw();
+
+    if (_strategy.GetStatus() == StrategyStatus.Finish)
+    {
+      comboBoxStrategy.Enabled = true;
+      _strategy = null;
     }
   }
 }

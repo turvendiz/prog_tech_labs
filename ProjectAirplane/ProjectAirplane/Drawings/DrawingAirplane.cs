@@ -1,9 +1,4 @@
 ﻿using ProjectAirplane.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ProjectAirplane.Drawings;
 
@@ -17,7 +12,7 @@ public class DrawingAirplane
   /// Класс-сущность
   /// </summary>
   public EntityAirplane? EntityAirplane { get; protected set; }
-  
+
   /// <summary>
   /// Ширина окна
   /// </summary>
@@ -41,12 +36,32 @@ public class DrawingAirplane
   /// <summary>
   /// Ширина прорисовки самолета
   /// </summary>
-  private readonly int _drawningAirplaneWidth = 85;
+  private readonly int _drawingAirplaneWidth = 85;
 
   /// <summary>
   /// Высота прорисовки самолета
   /// </summary>
-  private readonly int _drawningAirplaneHeight = 74;
+  private readonly int _drawingAirplaneHeight = 74;
+
+  /// <summary>
+  /// Координа Х
+  /// </summary>
+  public int? GetPosX => _startPosX;
+
+  /// <summary>
+  /// Координата Y
+  /// </summary>
+  public int? GetPosY => _startPosY;
+
+  /// <summary>
+  /// Ширина объекта
+  /// </summary>
+  public int GetWidth => _drawingAirplaneWidth;
+
+  /// <summary>
+  /// Высота объекта
+  /// </summary>
+  public int GetHeight => _drawingAirplaneHeight;
 
   /// <summary>
   /// Пустой онструктор
@@ -77,8 +92,8 @@ public class DrawingAirplane
   /// <param name="drawningAirplaneHeight">Высота прорисовки самолета</param>
   protected DrawingAirplane(int drawningAirplaneWidth, int drawningAirplaneHeight) : this()
   {
-    _drawningAirplaneWidth = drawningAirplaneWidth;
-    _drawningAirplaneHeight = drawningAirplaneHeight;
+    _drawingAirplaneWidth = drawningAirplaneWidth;
+    _drawingAirplaneHeight = drawningAirplaneHeight;
   }
 
   /// <summary>
@@ -91,7 +106,7 @@ public class DrawingAirplane
   {
     // проверка, что объект "влезает" в размеры поля
     // если влезает, сохраняем границы и корректируем позицию объекта, если она была уже установлена
-    if (width < _drawningAirplaneWidth || height < _drawningAirplaneHeight)
+    if (width < _drawingAirplaneWidth || height < _drawingAirplaneHeight)
       return false;
 
     _pictureWidth = width;
@@ -106,17 +121,14 @@ public class DrawingAirplane
   /// <param name="y">Координата Y</param>
   public void SetPosition(int x, int y)
   {
-    var endx = x + _drawningAirplaneWidth;
-    var endy = y + _drawningAirplaneHeight;
-
     if (!_pictureHeight.HasValue || !_pictureWidth.HasValue)
     {
       return;
     }
     // если при установке объекта в эти координаты, он будет "выходить" за границы формы
     // то надо изменить координаты, чтобы он оставался в этих границах
-    if (x > _pictureWidth - _drawningAirplaneWidth ||
-        y > _pictureHeight - _drawningAirplaneHeight ||
+    if (x > _pictureWidth - _drawingAirplaneWidth ||
+        y > _pictureHeight - _drawingAirplaneHeight ||
         x < 0 || y < 0)
     {
       x = 0;
@@ -141,7 +153,7 @@ public class DrawingAirplane
     {
       //влево
       case DirectionType.Left:
-        if (_startPosX - EntityAirplane.Step > 0)
+        if (_startPosX.Value - EntityAirplane.Step > 0)
         {
           _startPosX -= (int)EntityAirplane.Step;
         }
@@ -157,7 +169,7 @@ public class DrawingAirplane
 
       // вправо
       case DirectionType.Right:
-        if (_startPosX.Value + EntityAirplane.Step < _pictureWidth - _drawningAirplaneWidth)
+        if (_startPosX.Value + EntityAirplane.Step < _pictureWidth - _drawingAirplaneWidth)
         {
           _startPosX += (int)EntityAirplane.Step;
         }
@@ -165,7 +177,7 @@ public class DrawingAirplane
 
       //вниз
       case DirectionType.Down:
-        if (_startPosY.Value + EntityAirplane.Step < _pictureHeight - _drawningAirplaneHeight)
+        if (_startPosY.Value + EntityAirplane.Step < _pictureHeight - _drawingAirplaneHeight)
         {
           _startPosY += (int)EntityAirplane.Step;
         }
