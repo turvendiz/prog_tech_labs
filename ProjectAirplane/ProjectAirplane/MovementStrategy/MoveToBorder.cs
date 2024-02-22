@@ -13,10 +13,8 @@ public class MoveToBorder : AbstractStrategy
       return false;
     }
 
-    return objParams.ObjectMiddleHorizontal - GetStep() <= FieldWidth / 2
-        && objParams.ObjectMiddleHorizontal + GetStep() >= FieldWidth / 2
-        && objParams.ObjectMiddleVertical - GetStep() <= FieldHeight / 2
-        && objParams.ObjectMiddleVertical + GetStep() >= FieldHeight / 2;
+    return objParams.RightBorder <= FieldWidth && objParams.RightBorder + GetStep() >= FieldWidth &&
+            objParams.DownBorder <= FieldHeight && objParams.DownBorder + GetStep() >= FieldHeight;
   }
 
   protected override void MoveToTarget()
