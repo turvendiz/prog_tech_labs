@@ -1,53 +1,86 @@
-﻿namespace ProjectAirplane;
+﻿using ProjectAirplane.Entities;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
+namespace ProjectAirplane.Drawings;
+
+/// <summary>
+/// Класс, отвечающий за прорисовку и перемещение объекта-сущности
+/// </summary>
 public class DrawingAirplane
 {
+
   /// <summary>
   /// Класс-сущность
   /// </summary>
-  public EntityAirplane? EntityAirplane { get; private set; }
+  public EntityAirplane? EntityAirplane { get; protected set; }
+  
   /// <summary>
   /// Ширина окна
   /// </summary>
   private int? _pictureWidth;
+
   /// <summary>
   /// Высота окна
   /// </summary>
   private int? _pictureHeight;
+
   /// <summary>
   /// Левая координата прорисовки самолета
   /// </summary>
-  private int? _startPosX;
+  protected int? _startPosX;
+
   /// <summary>
   /// Верхняя кооридната прорисовки самолета
   /// </summary>
-  private int? _startPosY;
+  protected int? _startPosY;
+
   /// <summary>
   /// Ширина прорисовки самолета
   /// </summary>
   private readonly int _drawningAirplaneWidth = 85;
+
   /// <summary>
   /// Высота прорисовки самолета
   /// </summary>
   private readonly int _drawningAirplaneHeight = 74;
+
   /// <summary>
-  /// Инициализация свойств
+  /// Пустой онструктор
   /// </summary>
-  /// <param name="speed">Скорость</param>
-  /// <param name="weight">Вес</param>
-  /// <param name="bodyColor">Основной цвет</param>
-  /// <param name="additionalColor">Дополнительный цвет</param>
-  /// <param name="engineFirst">Признак наличия первой пары двигателей</param>
-  /// <param name="engineSecond">Признак наличия второй пары двигателей</param>
-  public void Init(int speed, double weight, Color bodyColor, Color additionalColor, bool engineFirst, bool engineSecond)
+  private DrawingAirplane()
   {
-    EntityAirplane = new EntityAirplane();
-    EntityAirplane.Init(speed, weight, bodyColor, additionalColor, engineFirst, engineSecond);
     _pictureWidth = null;
     _pictureHeight = null;
     _startPosX = null;
     _startPosY = null;
   }
+
+  /// <summary>
+  /// Конструктор для наследников
+  /// </summary>
+  /// <param name="speed">Скорость</param>
+  /// <param name="weight">Вес</param>
+  /// <param name="bodyColor">Основной цвет</param>
+  public DrawingAirplane(int speed, double weight, Color bodyColor) : this()
+  {
+    EntityAirplane = new EntityAirplane(speed, weight, bodyColor);
+  }
+
+  /// <summary>
+  /// Конструктор
+  /// </summary>
+  /// <param name="drawningAirplaneWidth">Ширина прорисовки самолета</param>
+  /// <param name="drawningAirplaneHeight">Высота прорисовки самолета</param>
+  protected DrawingAirplane(int drawningAirplaneWidth, int drawningAirplaneHeight) : this()
+  {
+    _drawningAirplaneWidth = drawningAirplaneWidth;
+    _drawningAirplaneHeight = drawningAirplaneHeight;
+  }
+
   /// <summary>
   /// Установка границ поля
   /// </summary>
@@ -65,6 +98,7 @@ public class DrawingAirplane
     _pictureHeight = height;
     return true;
   }
+
   /// <summary>
   /// Установка позиции
   /// </summary>
@@ -81,7 +115,7 @@ public class DrawingAirplane
     }
     // если при установке объекта в эти координаты, он будет "выходить" за границы формы
     // то надо изменить координаты, чтобы он оставался в этих границах
-    if (x > _pictureWidth - _drawningAirplaneWidth || 
+    if (x > _pictureWidth - _drawningAirplaneWidth ||
         y > _pictureHeight - _drawningAirplaneHeight ||
         x < 0 || y < 0)
     {
@@ -91,6 +125,7 @@ public class DrawingAirplane
     _startPosX = x;
     _startPosY = y;
   }
+
   /// <summary>
   /// Изменение направления перемещения
   /// </summary>
@@ -145,33 +180,13 @@ public class DrawingAirplane
   /// Прорисовка объекта
   /// </summary>
   /// <param name="g"></param>
-  public void DrawTransport(Graphics g)
+  public virtual void DrawTransport(Graphics g)
   {
     if (EntityAirplane == null || !_startPosX.HasValue || !_startPosY.HasValue)
     {
       return;
     }
     Pen pen = new(Color.Black);
-    Brush additionalBrush = new SolidBrush(EntityAirplane.AdditionalColor);
-
-    if (EntityAirplane.EngineFirst)
-    {
-      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 11, 5, 4);
-      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 60, 5, 4);
-
-      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 11, 5, 4);
-      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 60, 5, 4);
-
-    }
-    if (EntityAirplane.EngineSecond)
-    {
-      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 20, 5, 4);
-      g.DrawRectangle(pen, _startPosX.Value + 45, _startPosY.Value + 51, 5, 4);
-
-      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 20, 5, 4);
-      g.FillRectangle(additionalBrush, _startPosX.Value + 45, _startPosY.Value + 51, 5, 4);
-    }
-
 
     //границы самолета
     g.DrawRectangle(pen, _startPosX.Value, _startPosY.Value + 29, 70, 15);
@@ -218,6 +233,7 @@ public class DrawingAirplane
     Brush br = new SolidBrush(EntityAirplane.BodyColor);
     g.FillRectangle(br, _startPosX.Value, _startPosY.Value + 29, 70, 15);
 
+    // Крылья
     g.FillPolygon(br, new Point[] {
        new Point(_startPosX.Value + 40, _startPosY.Value),
        new Point(_startPosX.Value + 45, _startPosY.Value),
@@ -230,13 +246,14 @@ public class DrawingAirplane
        new Point(_startPosX.Value + 45, _startPosY.Value + 44),
        new Point(_startPosX.Value + 25, _startPosY.Value + 44)
      });
-    g.FillPolygon(additionalBrush, new Point[] {
+    // хвост
+    g.FillPolygon(br, new Point[] {
        new Point(_startPosX.Value, _startPosY.Value + 15),
        new Point(_startPosX.Value + 7, _startPosY.Value + 25),
        new Point(_startPosX.Value + 7, _startPosY.Value + 29),
        new Point(_startPosX.Value, _startPosY.Value + 29)
      });
-    g.FillPolygon(additionalBrush, new Point[] {
+    g.FillPolygon(br, new Point[] {
        new Point(_startPosX.Value, _startPosY.Value + 58),
        new Point(_startPosX.Value + 7, _startPosY.Value + 49),
        new Point(_startPosX.Value + 7, _startPosY.Value + 44),

@@ -29,11 +29,12 @@
     private void InitializeComponent()
     {
       pictureBoxAirplane = new PictureBox();
-      buttonCreate = new Button();
+      buttonCreateMilitaryAirplane = new Button();
       btnUp = new Button();
       btnRight = new Button();
       btnLeft = new Button();
       btnDown = new Button();
+      buttonCreateAirplane = new Button();
       ((System.ComponentModel.ISupportInitialize)pictureBoxAirplane).BeginInit();
       SuspendLayout();
       // 
@@ -46,15 +47,15 @@
       pictureBoxAirplane.TabIndex = 0;
       pictureBoxAirplane.TabStop = false;
       // 
-      // buttonCreate
+      // buttonCreateMilitaryAirplane
       // 
-      buttonCreate.Location = new Point(12, 541);
-      buttonCreate.Name = "buttonCreate";
-      buttonCreate.Size = new Size(75, 23);
-      buttonCreate.TabIndex = 1;
-      buttonCreate.Text = "Создать";
-      buttonCreate.UseVisualStyleBackColor = true;
-      buttonCreate.Click += buttonCreate_Click;
+      buttonCreateMilitaryAirplane.Location = new Point(12, 541);
+      buttonCreateMilitaryAirplane.Name = "buttonCreateMilitaryAirplane";
+      buttonCreateMilitaryAirplane.Size = new Size(181, 23);
+      buttonCreateMilitaryAirplane.TabIndex = 1;
+      buttonCreateMilitaryAirplane.Text = "Создать военный самолет";
+      buttonCreateMilitaryAirplane.UseVisualStyleBackColor = true;
+      buttonCreateMilitaryAirplane.Click += buttonCreateMilitaryAirplane_Click;
       // 
       // btnUp
       // 
@@ -104,16 +105,27 @@
       btnDown.UseVisualStyleBackColor = true;
       btnDown.Click += ButtonMove_Click;
       // 
+      // buttonCreateAirplane
+      // 
+      buttonCreateAirplane.Location = new Point(199, 541);
+      buttonCreateAirplane.Name = "buttonCreateAirplane";
+      buttonCreateAirplane.Size = new Size(181, 23);
+      buttonCreateAirplane.TabIndex = 6;
+      buttonCreateAirplane.Text = "Создать самолет";
+      buttonCreateAirplane.UseVisualStyleBackColor = true;
+      buttonCreateAirplane.Click += buttonCreateAirplane_Click;
+      // 
       // FormAirplane
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
       ClientSize = new Size(1017, 576);
+      Controls.Add(buttonCreateAirplane);
       Controls.Add(btnDown);
       Controls.Add(btnLeft);
       Controls.Add(btnRight);
       Controls.Add(btnUp);
-      Controls.Add(buttonCreate);
+      Controls.Add(buttonCreateMilitaryAirplane);
       Controls.Add(pictureBoxAirplane);
       Name = "FormAirplane";
       Text = "Самолёт";
@@ -124,10 +136,11 @@
     #endregion
 
     private PictureBox pictureBoxAirplane;
-    private Button buttonCreate;
+    private Button buttonCreateMilitaryAirplane;
     private Button btnUp;
     private Button btnRight;
     private Button btnLeft;
     private Button btnDown;
+    private Button buttonCreateAirplane;
   }
 }
