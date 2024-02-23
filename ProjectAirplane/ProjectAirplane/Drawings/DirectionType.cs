@@ -1,8 +1,8 @@
 ﻿namespace ProjectAirplane.Drawings;
 
 /// <summary>
-    /// Направление перемещения
-    /// </summary>
+/// Направление перемещения
+/// </summary>
 public enum DirectionType
 {
   /// <summary>

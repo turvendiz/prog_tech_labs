@@ -104,14 +104,6 @@ public class DrawingAirplane
   /// <returns>true - границы заданы, false - проверка не пройдена, нельзя разместить объект в этих размерах</returns>
   public bool SetPictureSize(int width, int height)
   {
-    // проверка, что объект "влезает" в размеры поля
-    // если влезает, сохраняем границы и корректируем позицию объекта, если она была уже установлена
-    /* if (width > _drawingAirplaneWidth || height > _drawingAirplaneHeight)
-       return false;*/
-   /* if (width <= _drawingAirplaneWidth || height <= _drawingAirplaneHeight)
-    {
-      return false;
-    }*/
     _pictureWidth = width;
     _pictureHeight = height;
     return true;
@@ -128,15 +120,6 @@ public class DrawingAirplane
     {
       return;
     }
-    // если при установке объекта в эти координаты, он будет "выходить" за границы формы
-    // то надо изменить координаты, чтобы он оставался в этих границах
-    /*if (x > _pictureWidth - _drawingAirplaneWidth ||
-        y > _pictureHeight - _drawingAirplaneHeight ||
-        x < 0 || y < 0)
-    {
-      x = 0;
-      y = 0;
-    }*/
     _startPosX = x;
     _startPosY = y;
   }
