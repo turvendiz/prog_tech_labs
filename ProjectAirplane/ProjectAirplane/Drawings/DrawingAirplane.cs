@@ -29,7 +29,7 @@ public class DrawingAirplane
   protected int? _startPosX;
 
   /// <summary>
-  /// Верхняя кооридната прорисовки самолета
+  /// Верхняя координата прорисовки самолета
   /// </summary>
   protected int? _startPosY;
 
@@ -106,9 +106,12 @@ public class DrawingAirplane
   {
     // проверка, что объект "влезает" в размеры поля
     // если влезает, сохраняем границы и корректируем позицию объекта, если она была уже установлена
-    if (width < _drawingAirplaneWidth || height < _drawingAirplaneHeight)
+    /* if (width > _drawingAirplaneWidth || height > _drawingAirplaneHeight)
+       return false;*/
+   /* if (width <= _drawingAirplaneWidth || height <= _drawingAirplaneHeight)
+    {
       return false;
-
+    }*/
     _pictureWidth = width;
     _pictureHeight = height;
     return true;
@@ -119,7 +122,7 @@ public class DrawingAirplane
   /// </summary>
   /// <param name="x">Координата X</param>
   /// <param name="y">Координата Y</param>
-  public void SetPosition(int x, int y)
+  public void SetPosition(int? x, int? y)
   {
     if (!_pictureHeight.HasValue || !_pictureWidth.HasValue)
     {
@@ -127,13 +130,13 @@ public class DrawingAirplane
     }
     // если при установке объекта в эти координаты, он будет "выходить" за границы формы
     // то надо изменить координаты, чтобы он оставался в этих границах
-    if (x > _pictureWidth - _drawingAirplaneWidth ||
+    /*if (x > _pictureWidth - _drawingAirplaneWidth ||
         y > _pictureHeight - _drawingAirplaneHeight ||
         x < 0 || y < 0)
     {
       x = 0;
       y = 0;
-    }
+    }*/
     _startPosX = x;
     _startPosY = y;
   }

@@ -18,20 +18,7 @@ public partial class FormAirplane : Form
   /// </summary>
   private AbstractStrategy? _strategy;
 
-  /// <summary>
-  /// Получение объекта 
-  /// </summary>
-  public DrawingAirplane SetAirplane
-  {
-    set
-    {
-      _drawingAirplane = value;
-      _drawingAirplane.SetPictureSize(pictureBoxAirplane.Width, pictureBoxAirplane.Height);
-      comboBoxStrategy.Enabled = true;
-      _strategy = null;
-      Draw();
-    }
-  }
+  public DrawingAirplane SetAirplane { get; internal set; }
 
   /// <summary>
   /// Конструктор формы
@@ -56,6 +43,54 @@ public partial class FormAirplane : Form
     _drawingAirplane.DrawTransport(gr);
     pictureBoxAirplane.Image = bmp;
   }
+
+  /// <summary>
+  /// Создание объекта класса-перемещения
+  /// </summary>
+  /// <param name="type">Тип создаваемого объекта</param>
+  private void CreateObject(string type)
+  {
+    Random random = new();
+    switch (type)
+    {
+      case nameof(DrawingAirplane):
+        _drawingAirplane = new DrawingAirplane(
+          speed: random.Next(100, 300),
+          weight: random.Next(1000, 3000),
+          bodyColor: Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)));
+        break;
+      case nameof(DrawingMilitaryAirplane):
+        _drawingAirplane = new DrawingMilitaryAirplane(
+          speed: random.Next(100, 300),
+          weight: random.Next(1000, 3000),
+          bodyColor: Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+          additionalColor: Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256)),
+          engineFirst: Convert.ToBoolean(random.Next(0, 2)),
+          engineSecond: Convert.ToBoolean(random.Next(0, 2)));
+        break;
+      default:
+        return;
+    }
+    _drawingAirplane.SetPictureSize(pictureBoxAirplane.Width, pictureBoxAirplane.Height);
+    _drawingAirplane.SetPosition(random.Next(10, 100), random.Next(10, 100));
+    _strategy = null;
+    comboBoxStrategy.Enabled = true;
+    Draw();
+  }
+
+  /// <summary>
+  /// Обработка нажатия кнопки "Создать военный самолет"
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonCreateMilitaryAirplane_Click(object sender, EventArgs e) => CreateObject(nameof(DrawingMilitaryAirplane));
+
+  /// <summary>
+  /// Обработка нажатия кнопки "Создать самолет"
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonCreateAirplane_Click(object sender, EventArgs e) => CreateObject(nameof(DrawingAirplane));
 
   /// <summary>
   /// Перемещение объекта по форме (нажатие кнопок навигации)

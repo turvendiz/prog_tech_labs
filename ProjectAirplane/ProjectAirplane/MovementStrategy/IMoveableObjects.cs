@@ -19,6 +19,6 @@ public interface IMoveableObjects
   /// Попытка переместить объект в указанном направлении 
   /// </summary>
   /// <param name="direction"> Направление</param>
-  /// <returns>true - Объект перемещен, false - перемещение невозможно-v</returns>
+  /// <returns>true - Объект перемещен, false - перемещение невозможно</returns>
   bool TryMoveObject(MovementDirection direction);
 }
