@@ -9,6 +9,11 @@ namespace ProjectAirplane;
 public partial class FormAirplaneCollection : Form
 {
   /// <summary>
+  /// Хранилише коллекций
+  /// </summary>
+  private readonly StorageCollection<DrawingAirplane> _storageCollection;
+
+  /// <summary>
   /// Компания
   /// </summary>
   private AbstractCompany? _company = null;
@@ -20,6 +25,7 @@ public partial class FormAirplaneCollection : Form
   public FormAirplaneCollection()
   {
     InitializeComponent();
+    _storageCollection = new();
   }
 
   /// <summary>
@@ -29,12 +35,7 @@ public partial class FormAirplaneCollection : Form
   /// <param name="e"></param>
   private void ComboBoxSelectorCompany_SelectedIndexChanged(object sender, EventArgs e)
   {
-    switch (comboBoxSelectorCompany.Text)
-    {
-      case "Хранилище":
-        _company = new AirplaneSharingService(pictureBox.Width, pictureBox.Height, new MassiveGenericObjects<DrawingAirplane>());
-        break;
-    }
+    panelCompanyTools.Enabled = false;
   }
 
   /// <summary>
@@ -183,5 +184,101 @@ public partial class FormAirplaneCollection : Form
       return;
     }
     pictureBox.Image = _company.Show();
+  }
+
+  /// <summary>
+  /// Добавление коллекции
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonAddCollection_Click(object sender, EventArgs e)
+  {
+    if (string.IsNullOrEmpty(textBoxCollectionName.Text) || (!radioButtonList.Checked && !radioButtonMassive.Checked))
+    {
+      MessageBox.Show("Не все данные заполнены", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      return;
+    }
+
+    CollectionType collectionType = CollectionType.None;
+    if (radioButtonMassive.Checked)
+    {
+      collectionType = CollectionType.Massive;
+    }
+    else if (radioButtonList.Checked)
+    {
+      collectionType = CollectionType.List;
+    }
+
+    _storageCollection.AddCollection(textBoxCollectionName.Text, collectionType);
+    RerfreshListBoxItems();
+  }
+
+  /// <summary>
+  /// Удаление коллекции
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonDelCollection_Click(object sender, EventArgs e)
+  {
+    if (string.IsNullOrEmpty(textBoxCollectionName.Text) || (!radioButtonList.Checked && !radioButtonMassive.Checked))
+    {
+      MessageBox.Show("Коллекция не выбрана", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+      return;
+    }
+    if (MessageBox.Show("Удалить объект?", "Удаление", MessageBoxButtons.YesNo, MessageBoxIcon.Question) != DialogResult.Yes)
+    {
+      return;
+    }
+    _storageCollection.DelCollection(textBoxCollectionName.Text);
+    MessageBox.Show("Объект удален");
+    RerfreshListBoxItems();
+  }
+
+  /// <summary>
+  /// Обновление списка в listBoxCollection
+  /// </summary>
+  private void RerfreshListBoxItems()
+  {
+    listBoxCollection.Items.Clear();
+    for (int i = 0; i < _storageCollection.Keys?.Count; ++i)
+    {
+      string? colName = _storageCollection.Keys?[i];
+      if (!string.IsNullOrEmpty(colName))
+      {
+        listBoxCollection.Items.Add(colName);
+      }
+    }
+
+  }
+
+  /// <summary>
+  /// Создание компании
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void buttonCreateCompany_Click(object sender, EventArgs e)
+  {
+    if (listBoxCollection.SelectedIndex < 0 || listBoxCollection.SelectedItem == null)
+    {
+      MessageBox.Show("Коллекция не выбрана");
+      return;
+    }
+
+    ICollectionGenericObjects<DrawingAirplane>? collection = _storageCollection[listBoxCollection.SelectedItem.ToString() ?? string.Empty];
+    if (collection == null)
+    {
+      MessageBox.Show("Коллекция не проинициализирована");
+      return;
+    }
+
+    switch (comboBoxSelectorCompany.Text)
+    {
+      case "Хранилище":
+        _company = new AirplaneSharingService(pictureBox.Width, pictureBox.Height, collection);
+        break;
+    }
+    
+    panelCompanyTools.Enabled = true;
+    RerfreshListBoxItems();
   }
 }
