@@ -13,7 +13,7 @@ public class DrawingMilitaryAirplane : DrawingAirplane
   /// <param name="additionalColor">Дополнительный цвет</param>
   /// <param name="engineFirst">Признак наличия первой пары двигателей</param>
   /// <param name="engineSecond">Признак наличия второй пары двигателей</param>
-  public DrawingMilitaryAirplane(int speed, double weight, Color bodyColor, Color additionalColor, bool engineFirst, bool engineSecond) : base(85, 74)
+  public DrawingMilitaryAirplane(int speed, double weight, Color bodyColor, Color additionalColor, bool engineFirst, bool engineSecond) : base(90,80)//85, 74)
   {
     EntityAirplane = new EntityMilitaryAirplane(speed, weight, bodyColor, additionalColor, engineFirst, engineSecond);
   }

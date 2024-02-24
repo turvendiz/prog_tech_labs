@@ -53,7 +53,7 @@
       groupBoxTools.Dock = DockStyle.Right;
       groupBoxTools.Location = new Point(607, 0);
       groupBoxTools.Name = "groupBoxTools";
-      groupBoxTools.Size = new Size(194, 563);
+      groupBoxTools.Size = new Size(194, 588);
       groupBoxTools.TabIndex = 0;
       groupBoxTools.TabStop = false;
       groupBoxTools.Text = " Инструменты";
@@ -140,7 +140,7 @@
       pictureBox.Dock = DockStyle.Fill;
       pictureBox.Location = new Point(0, 0);
       pictureBox.Name = "pictureBox";
-      pictureBox.Size = new Size(607, 563);
+      pictureBox.Size = new Size(607, 588);
       pictureBox.TabIndex = 1;
       pictureBox.TabStop = false;
       // 
@@ -148,7 +148,7 @@
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
       AutoScaleMode = AutoScaleMode.Font;
-      ClientSize = new Size(801, 563);
+      ClientSize = new Size(801, 588);
       Controls.Add(pictureBox);
       Controls.Add(groupBoxTools);
       Name = "FormAirplaneCollection";

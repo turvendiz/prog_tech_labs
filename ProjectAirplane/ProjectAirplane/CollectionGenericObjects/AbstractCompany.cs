@@ -10,11 +10,11 @@ public abstract class AbstractCompany
   /// <summary>
   /// Размер места (ширина)
   /// </summary>
-  protected readonly int _placeSizeWidth = 85;
+  protected readonly int _placeSizeWidth = 90;//85;
   /// <summary>
   /// Размер места (высота)
   /// </summary>
-  protected readonly int _placeSizeHeight = 74;
+  protected readonly int _placeSizeHeight = 80;//74;
   /// <summary>
   /// Ширина окна
   /// </summary>

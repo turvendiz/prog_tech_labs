@@ -36,12 +36,12 @@ public class DrawingAirplane
   /// <summary>
   /// Ширина прорисовки самолета
   /// </summary>
-  private readonly int _drawingAirplaneWidth = 85;
+  private readonly int _drawingAirplaneWidth = 90;//85;
 
   /// <summary>
   /// Высота прорисовки самолета
   /// </summary>
-  private readonly int _drawingAirplaneHeight = 74;
+  private readonly int _drawingAirplaneHeight = 80;//74;
 
   /// <summary>
   /// Координа Х

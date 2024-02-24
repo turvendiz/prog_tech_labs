@@ -74,8 +74,8 @@ public partial class FormAirplaneCollection : Form
         drawingAirplane = new DrawingMilitaryAirplane(
           speed: rnd.Next(100, 300),
           weight: rnd.Next(1000, 3000),
-          bodyColor: Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
-          additionalColor: Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
+          bodyColor: /*GetColor(rnd),*/Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
+          additionalColor: /*GetColor(rnd),*/Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
           engineFirst: Convert.ToBoolean(rnd.Next(0, 2)),
           engineSecond: Convert.ToBoolean(rnd.Next(0, 2)));
         break;
