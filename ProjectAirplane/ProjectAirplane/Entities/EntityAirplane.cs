@@ -37,4 +37,14 @@ public class EntityAirplane
     Weight = weight;
     BodyColor = bodyColor;
   }
+
+  /// <summary>
+  /// Новый основной цвет
+  /// </summary>
+  /// <param name="color"></param>
+  public void ChangeColor(Color color)
+  {
+    BodyColor = color;
+  }
 }
+

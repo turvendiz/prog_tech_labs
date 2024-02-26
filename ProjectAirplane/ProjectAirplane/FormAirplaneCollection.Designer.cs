@@ -29,6 +29,12 @@
     private void InitializeComponent()
     {
       groupBoxTools = new GroupBox();
+      panelCompanyTools = new Panel();
+      buttonAddAirplane = new Button();
+      buttonRefresh = new Button();
+      maskedTextBox = new MaskedTextBox();
+      buttonGoToCheck = new Button();
+      buttonRemoveAirplane = new Button();
       buttonCreateCompany = new Button();
       panelStorage = new Panel();
       buttonDelCollection = new Button();
@@ -38,19 +44,12 @@
       radioButtonMassive = new RadioButton();
       textBoxCollectionName = new TextBox();
       labelCollectionName = new Label();
-      buttonRefresh = new Button();
-      buttonGoToCheck = new Button();
-      buttonRemoveAirplane = new Button();
-      maskedTextBox = new MaskedTextBox();
-      buttonAddMilitaryAirplane = new Button();
-      buttonAddAirplane = new Button();
       comboBoxSelectorCompany = new ComboBox();
       pictureBox = new PictureBox();
-      panelCompanyTools = new Panel();
       groupBoxTools.SuspendLayout();
+      panelCompanyTools.SuspendLayout();
       panelStorage.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
-      panelCompanyTools.SuspendLayout();
       SuspendLayout();
       // 
       // groupBoxTools
@@ -66,6 +65,74 @@
       groupBoxTools.TabIndex = 0;
       groupBoxTools.TabStop = false;
       groupBoxTools.Text = " Инструменты";
+      // 
+      // panelCompanyTools
+      // 
+      panelCompanyTools.Controls.Add(buttonAddAirplane);
+      panelCompanyTools.Controls.Add(buttonRefresh);
+      panelCompanyTools.Controls.Add(maskedTextBox);
+      panelCompanyTools.Controls.Add(buttonGoToCheck);
+      panelCompanyTools.Controls.Add(buttonRemoveAirplane);
+      panelCompanyTools.Dock = DockStyle.Bottom;
+      panelCompanyTools.Enabled = false;
+      panelCompanyTools.Location = new Point(3, 335);
+      panelCompanyTools.Name = "panelCompanyTools";
+      panelCompanyTools.Size = new Size(188, 250);
+      panelCompanyTools.TabIndex = 8;
+      // 
+      // buttonAddAirplane
+      // 
+      buttonAddAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      buttonAddAirplane.Location = new Point(6, 10);
+      buttonAddAirplane.Name = "buttonAddAirplane";
+      buttonAddAirplane.Size = new Size(170, 36);
+      buttonAddAirplane.TabIndex = 1;
+      buttonAddAirplane.Text = "Добавление самолета";
+      buttonAddAirplane.UseVisualStyleBackColor = true;
+      buttonAddAirplane.Click += ButtonAddAirplane_Click;
+      // 
+      // buttonRefresh
+      // 
+      buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      buttonRefresh.Location = new Point(6, 207);
+      buttonRefresh.Name = "buttonRefresh";
+      buttonRefresh.Size = new Size(170, 36);
+      buttonRefresh.TabIndex = 5;
+      buttonRefresh.Text = "Обновить";
+      buttonRefresh.UseVisualStyleBackColor = true;
+      buttonRefresh.Click += ButtonRefresh_Click;
+      // 
+      // maskedTextBox
+      // 
+      maskedTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      maskedTextBox.Location = new Point(6, 94);
+      maskedTextBox.Mask = "00";
+      maskedTextBox.Name = "maskedTextBox";
+      maskedTextBox.Size = new Size(170, 23);
+      maskedTextBox.TabIndex = 3;
+      maskedTextBox.ValidatingType = typeof(int);
+      // 
+      // buttonGoToCheck
+      // 
+      buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      buttonGoToCheck.Location = new Point(6, 165);
+      buttonGoToCheck.Name = "buttonGoToCheck";
+      buttonGoToCheck.Size = new Size(170, 36);
+      buttonGoToCheck.TabIndex = 4;
+      buttonGoToCheck.Text = "Передать на тесты";
+      buttonGoToCheck.UseVisualStyleBackColor = true;
+      buttonGoToCheck.Click += ButtonGoToCheck_Click;
+      // 
+      // buttonRemoveAirplane
+      // 
+      buttonRemoveAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
+      buttonRemoveAirplane.Location = new Point(6, 123);
+      buttonRemoveAirplane.Name = "buttonRemoveAirplane";
+      buttonRemoveAirplane.Size = new Size(170, 36);
+      buttonRemoveAirplane.TabIndex = 3;
+      buttonRemoveAirplane.Text = " Удалить самолет";
+      buttonRemoveAirplane.UseVisualStyleBackColor = true;
+      buttonRemoveAirplane.Click += ButtonRemoveAirplane_Click;
       // 
       // buttonCreateCompany
       // 
@@ -159,72 +226,6 @@
       labelCollectionName.TabIndex = 0;
       labelCollectionName.Text = "Название коллекции:";
       // 
-      // buttonRefresh
-      // 
-      buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonRefresh.Location = new Point(6, 207);
-      buttonRefresh.Name = "buttonRefresh";
-      buttonRefresh.Size = new Size(170, 36);
-      buttonRefresh.TabIndex = 5;
-      buttonRefresh.Text = "Обновить";
-      buttonRefresh.UseVisualStyleBackColor = true;
-      buttonRefresh.Click += ButtonRefresh_Click;
-      // 
-      // buttonGoToCheck
-      // 
-      buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonGoToCheck.Location = new Point(6, 165);
-      buttonGoToCheck.Name = "buttonGoToCheck";
-      buttonGoToCheck.Size = new Size(170, 36);
-      buttonGoToCheck.TabIndex = 4;
-      buttonGoToCheck.Text = "Передать на тесты";
-      buttonGoToCheck.UseVisualStyleBackColor = true;
-      buttonGoToCheck.Click += ButtonGoToCheck_Click;
-      // 
-      // buttonRemoveAirplane
-      // 
-      buttonRemoveAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonRemoveAirplane.Location = new Point(6, 123);
-      buttonRemoveAirplane.Name = "buttonRemoveAirplane";
-      buttonRemoveAirplane.Size = new Size(170, 36);
-      buttonRemoveAirplane.TabIndex = 3;
-      buttonRemoveAirplane.Text = " Удалить самолет";
-      buttonRemoveAirplane.UseVisualStyleBackColor = true;
-      buttonRemoveAirplane.Click += ButtonRemoveAirplane_Click;
-      // 
-      // maskedTextBox
-      // 
-      maskedTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      maskedTextBox.Location = new Point(6, 94);
-      maskedTextBox.Mask = "00";
-      maskedTextBox.Name = "maskedTextBox";
-      maskedTextBox.Size = new Size(170, 23);
-      maskedTextBox.TabIndex = 3;
-      maskedTextBox.ValidatingType = typeof(int);
-      // 
-      // buttonAddMilitaryAirplane
-      // 
-      buttonAddMilitaryAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonAddMilitaryAirplane.Font = new Font("Segoe UI", 7.9F);
-      buttonAddMilitaryAirplane.Location = new Point(6, 52);
-      buttonAddMilitaryAirplane.Name = "buttonAddMilitaryAirplane";
-      buttonAddMilitaryAirplane.Size = new Size(170, 36);
-      buttonAddMilitaryAirplane.TabIndex = 2;
-      buttonAddMilitaryAirplane.Text = "Добавление военного самолета";
-      buttonAddMilitaryAirplane.UseVisualStyleBackColor = true;
-      buttonAddMilitaryAirplane.Click += ButtonAddMilitaryAirplane_Click;
-      // 
-      // buttonAddAirplane
-      // 
-      buttonAddAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonAddAirplane.Location = new Point(6, 10);
-      buttonAddAirplane.Name = "buttonAddAirplane";
-      buttonAddAirplane.Size = new Size(170, 36);
-      buttonAddAirplane.TabIndex = 1;
-      buttonAddAirplane.Text = "Добавление самолета";
-      buttonAddAirplane.UseVisualStyleBackColor = true;
-      buttonAddAirplane.Click += ButtonAddAirplane_Click;
-      // 
       // comboBoxSelectorCompany
       // 
       comboBoxSelectorCompany.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
@@ -246,21 +247,6 @@
       pictureBox.TabIndex = 1;
       pictureBox.TabStop = false;
       // 
-      // panelCompanyTools
-      // 
-      panelCompanyTools.Controls.Add(buttonAddAirplane);
-      panelCompanyTools.Controls.Add(buttonAddMilitaryAirplane);
-      panelCompanyTools.Controls.Add(buttonRefresh);
-      panelCompanyTools.Controls.Add(maskedTextBox);
-      panelCompanyTools.Controls.Add(buttonGoToCheck);
-      panelCompanyTools.Controls.Add(buttonRemoveAirplane);
-      panelCompanyTools.Dock = DockStyle.Bottom;
-      panelCompanyTools.Enabled = false;
-      panelCompanyTools.Location = new Point(3, 335);
-      panelCompanyTools.Name = "panelCompanyTools";
-      panelCompanyTools.Size = new Size(188, 250);
-      panelCompanyTools.TabIndex = 8;
-      // 
       // FormAirplaneCollection
       // 
       AutoScaleDimensions = new SizeF(7F, 15F);
@@ -271,11 +257,11 @@
       Name = "FormAirplaneCollection";
       Text = "Коллекция самолетов";
       groupBoxTools.ResumeLayout(false);
+      panelCompanyTools.ResumeLayout(false);
+      panelCompanyTools.PerformLayout();
       panelStorage.ResumeLayout(false);
       panelStorage.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
-      panelCompanyTools.ResumeLayout(false);
-      panelCompanyTools.PerformLayout();
       ResumeLayout(false);
     }
 
@@ -284,7 +270,6 @@
     private GroupBox groupBoxTools;
     private Button buttonAddAirplane;
     private ComboBox comboBoxSelectorCompany;
-    private Button buttonAddMilitaryAirplane;
     private Button buttonRemoveAirplane;
     private MaskedTextBox maskedTextBox;
     private PictureBox pictureBox;

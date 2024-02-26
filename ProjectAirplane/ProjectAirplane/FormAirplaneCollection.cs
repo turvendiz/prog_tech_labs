@@ -39,51 +39,29 @@ public partial class FormAirplaneCollection : Form
   }
 
   /// <summary>
-  /// Добавление обычного самолета
+  /// Добавление самолета
   /// </summary>
   /// <param name="sender"></param>
   /// <param name="e"></param>
-  private void ButtonAddAirplane_Click(object sender, EventArgs e) => CreateObj(nameof(DrawingAirplane));
-
-  /// <summary>
-  /// Добавление военного самолета
-  /// </summary>
-  /// <param name="sender"></param>
-  /// <param name="e"></param>
-  private void ButtonAddMilitaryAirplane_Click(object sender, EventArgs e) => CreateObj(nameof(DrawingMilitaryAirplane));
-
-  /// <summary>
-  /// Создание объекта класса-перемещения
-  /// </summary>
-  /// <param name="type">Тип создаваемого объекта</param>
-  private void CreateObj(string type)
+  private void ButtonAddAirplane_Click(object sender, EventArgs e)
   {
-    if (_company == null)
+    FormAirplaneConfig form = new();
+    form.AddEvent(SetAirplane);
+    form.Show();
+  }
+
+  /// <summary>
+  /// Добавление автомобиля в коллекцию
+  /// </summary>
+  /// <param name="boat"></param>
+  private void SetAirplane(DrawingAirplane? airplane)
+  {
+    if (_company == null || airplane == null)
     {
       return;
     }
-    Random rnd = new();
-    DrawingAirplane drawingAirplane;
-    switch (type)
-    {
-      case nameof(DrawingAirplane):
-        drawingAirplane = new DrawingAirplane(speed: rnd.Next(100, 300), weight: rnd.Next(1000, 3000), bodyColor: GetColor(rnd));
 
-        break;
-
-      case nameof(DrawingMilitaryAirplane):
-        drawingAirplane = new DrawingMilitaryAirplane(
-          speed: rnd.Next(100, 300),
-          weight: rnd.Next(1000, 3000),
-          bodyColor: /*GetColor(rnd),*/Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
-          additionalColor: /*GetColor(rnd),*/Color.FromArgb(rnd.Next(0, 256), rnd.Next(0, 256), rnd.Next(0, 256)),
-          engineFirst: Convert.ToBoolean(rnd.Next(0, 2)),
-          engineSecond: Convert.ToBoolean(rnd.Next(0, 2)));
-        break;
-      default:
-        return;
-    }
-    if (_company + drawingAirplane)
+    if (_company + airplane)
     {
       MessageBox.Show("Объект добавлен");
       pictureBox.Image = _company.Show();
@@ -92,22 +70,6 @@ public partial class FormAirplaneCollection : Form
     {
       MessageBox.Show("Не удалось добавить объект");
     }
-  }
-
-  /// <summary>
-  /// Получение цвета
-  /// </summary>
-  /// <param name="random">Генератор случайных чисел</param>
-  /// <returns></returns>
-  private static Color GetColor(Random random)
-  {
-    Color color = Color.FromArgb(random.Next(0, 256), random.Next(0, 256), random.Next(0, 256));
-    ColorDialog dialog = new();
-    if (dialog.ShowDialog() == DialogResult.OK)
-    {
-      color = dialog.Color;
-    }
-    return color;
   }
 
   /// <summary>
@@ -277,7 +239,7 @@ public partial class FormAirplaneCollection : Form
         _company = new AirplaneSharingService(pictureBox.Width, pictureBox.Height, collection);
         break;
     }
-    
+
     panelCompanyTools.Enabled = true;
     RerfreshListBoxItems();
   }

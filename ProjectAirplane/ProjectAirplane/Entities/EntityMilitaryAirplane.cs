@@ -35,4 +35,13 @@ public class EntityMilitaryAirplane : EntityAirplane
     EngineFirst = engineFirst;
     EngineSecond = engineSecond;
   }
+
+  /// <summary>
+  /// Новый дополнительный цвет
+  /// </summary>
+  /// <param name="color"></param>
+  public void ChangeAdditionalColor(Color color)
+  {
+    AdditionalColor = color;
+  }
 }
