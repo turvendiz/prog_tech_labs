@@ -35,7 +35,7 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
   /// </summary>
   public MassiveGenericObjects()
   {
-    _collection = Array.Empty<T>();
+    _collection = Array.Empty<T?>();
   }
 
   public T? Get(int position)
@@ -69,7 +69,26 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
 
   public bool Insert(T obj, int position)
   {
-    for (int i = 0; i < _collection.Length; i++)
+if (position >= 0 && position < _collection.Length)
+            {
+                if (_collection[position] == null)
+                {
+                    _collection[position] = obj;
+                    return true;
+                }
+
+                for (int i = position + 1; i < _collection.Length; i++)
+                {
+                    if (_collection[i] == null)
+                    {
+                        _collection[i] = obj;
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+    /*for (int i = 0; i < _collection.Length; i++)
     {
       if (_collection[i] == null)
       {
@@ -77,7 +96,7 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
         return true;
       }
     }
-    return false;
+    return false;*/
   }
 
   public bool Remove(int position)

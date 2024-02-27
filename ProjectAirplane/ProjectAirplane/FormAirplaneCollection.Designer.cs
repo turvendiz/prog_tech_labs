@@ -241,6 +241,7 @@
       // pictureBox
       // 
       pictureBox.Dock = DockStyle.Fill;
+            pictureBox.Enabled = false;
       pictureBox.Location = new Point(0, 0);
       pictureBox.Name = "pictureBox";
       pictureBox.Size = new Size(607, 588);

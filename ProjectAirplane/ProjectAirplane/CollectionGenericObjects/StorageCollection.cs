@@ -48,6 +48,10 @@ public class StorageCollection<T> where T : class
     }
   }
 
+        /// <summary>
+        /// Удаление коллекции
+        /// </summary>
+        /// <param name="name">Название коллекции</param>
   public void DelCollection(string name)
   {
     if (name == null || !Keys.Contains(name))
@@ -57,6 +61,11 @@ public class StorageCollection<T> where T : class
     _storages.Remove(name);
   }
 
+        /// <summary>
+        /// Доступ к коллекции
+        /// </summary>
+        /// <param name="name">Название коллекции</param>
+        /// <returns></returns>
   public ICollectionGenericObjects<T>? this[string name]
   {
     get

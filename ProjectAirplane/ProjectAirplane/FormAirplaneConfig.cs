@@ -107,7 +107,8 @@ public partial class FormAirplaneConfig : Form
   /// <param name="e"></param>
   private void Panel_MouseDown(object? sender, MouseEventArgs e)
   {
-    (sender as Panel)?.DoDragDrop((sender as Panel)?.BackColor, DragDropEffects.Move | DragDropEffects.Copy);
+            (sender as Panel)?.DoDragDrop((sender as Panel)?.BackColor ?? Color.White, DragDropEffects.Move | DragDropEffects.Copy);
+//    (sender as Panel)?.DoDragDrop((sender as Panel)?.BackColor, DragDropEffects.Move | DragDropEffects.Copy);
   }
   /// <summary>
   /// Проверка получаемой информации (ее типа на соответствие требуемому)
@@ -137,10 +138,12 @@ public partial class FormAirplaneConfig : Form
         _airplane.EntityAirplane.ChangeColor((Color)e.Data.GetData(typeof(Color)));
         break;
       case "labelAdditionalColor":
-        if (_airplane is DrawingMilitaryAirplane drawningMotorBoat && _airplane.EntityAirplane is EntityMilitaryAirplane entityMotorBoat)
+        if (_airplane == null) return;
+        (_airplane.EntityAirplane as EntityMilitaryAirplane)?.ChangeAdditionalColor((Color)e.Data.GetData(typeof(Color)));
+        /*if (_airplane is DrawingMilitaryAirplane drawningMotorBoat && _airplane.EntityAirplane is EntityMilitaryAirplane entityMotorBoat)
         {
           entityMotorBoat.ChangeAdditionalColor((Color)e.Data?.GetData(typeof(Color)));
-        }
+        }*/
         break;
     }
 

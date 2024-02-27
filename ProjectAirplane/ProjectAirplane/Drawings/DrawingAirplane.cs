@@ -66,7 +66,7 @@ public class DrawingAirplane
   /// <summary>
   /// Пустой онструктор
   /// </summary>
-  private DrawingAirplane()
+  public DrawingAirplane()
   {
     _pictureWidth = null;
     _pictureHeight = null;
