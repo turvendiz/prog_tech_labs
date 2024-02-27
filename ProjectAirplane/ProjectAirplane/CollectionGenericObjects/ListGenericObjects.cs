@@ -19,7 +19,18 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T> where T : clas
 
   public int Count => _collection.Count;
 
-  public int SetMaxCount { set { if (value > 0) { _maxCount = value; } } }
+public int MaxCount
+        {
+            get => _maxCount;
+            set
+            {
+                if (value > 0)
+                {
+                    _maxCount = value;
+                }
+            }
+        }
+public CollectionType GetCollectionType => CollectionType.List;
 
   /// <summary>
   /// Конструктор
@@ -67,4 +78,12 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T> where T : clas
     _collection.RemoveAt(position);
     return true;
   }
+
+        public IEnumerable<T?> GetItems()
+        {
+            for (int i = 0; i < _collection.Count; ++i)
+            {
+                yield return _collection[i];
+            }
+        }
 }

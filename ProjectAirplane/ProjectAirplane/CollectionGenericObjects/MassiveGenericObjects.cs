@@ -1,4 +1,5 @@
-﻿namespace ProjectAirplane.CollectionGenericObjects;
+﻿
+namespace ProjectAirplane.CollectionGenericObjects;
 
 /// <summary>
 /// Параметризованный набор объектов
@@ -12,8 +13,13 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
   private T?[] _collection;
   public int Count => _collection.Length;
 
-  public int SetMaxCount
+  public int MaxCount
   {
+    get
+    {
+      return _collection.Length;
+    }
+
     set
     {
       if (value > 0)
@@ -29,6 +35,8 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
       }
     }
   }
+
+  public CollectionType GetCollectionType => CollectionType.Massive;
 
   /// <summary>
   /// Конструктор
@@ -108,6 +116,14 @@ if (position >= 0 && position < _collection.Length)
     }
 
     return false;
+  }
+
+  public IEnumerable<T?> GetItems()
+  {
+    for (int i = 0; i < _collection.Length; ++i)
+    {
+      yield return _collection[i];
+    }
   }
 }
 

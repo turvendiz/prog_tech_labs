@@ -1,5 +1,6 @@
 ﻿using ProjectAirplane.CollectionGenericObjects;
 using ProjectAirplane.Drawings;
+using System.Windows.Forms;
 
 namespace ProjectAirplane;
 
@@ -17,7 +18,6 @@ public partial class FormAirplaneCollection : Form
   /// Компания
   /// </summary>
   private AbstractCompany? _company = null;
-
 
   /// <summary>
   /// Конструктор
@@ -45,6 +45,7 @@ public partial class FormAirplaneCollection : Form
   /// <param name="e"></param>
   private void ButtonAddAirplane_Click(object sender, EventArgs e)
   {
+
     FormAirplaneConfig form = new();
     form.AddEvent(SetAirplane);
     form.Show();
@@ -172,7 +173,7 @@ public partial class FormAirplaneCollection : Form
     }
 
     _storageCollection.AddCollection(textBoxCollectionName.Text, collectionType);
-    RerfreshListBoxItems();
+    RefreshListBoxItems();
   }
 
   /// <summary>
@@ -192,14 +193,14 @@ public partial class FormAirplaneCollection : Form
       return;
     }
     _storageCollection.DelCollection(textBoxCollectionName.Text);
-    MessageBox.Show("Объект удален");
-    RerfreshListBoxItems();
+    //MessageBox.Show("Объект удален");
+    RefreshListBoxItems();
   }
 
   /// <summary>
   /// Обновление списка в listBoxCollection
   /// </summary>
-  private void RerfreshListBoxItems()
+  private void RefreshListBoxItems()
   {
     listBoxCollection.Items.Clear();
     for (int i = 0; i < _storageCollection.Keys?.Count; ++i)
@@ -241,6 +242,50 @@ public partial class FormAirplaneCollection : Form
     }
 
     panelCompanyTools.Enabled = true;
-    RerfreshListBoxItems();
+    RefreshListBoxItems();
+  }
+
+  /// <summary>
+  /// Обработка нажатия на "Сохранение"
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
+  {
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (_storageCollection.SaveData(saveFileDialog.FileName))
+                {
+                    MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+  }
+
+  /// <summary>
+  /// Обработка нажатия на "Загрузка"
+  /// </summary>
+  /// <param name="sender"></param>
+  /// <param name="e"></param>
+  private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
+  {
+if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (_storageCollection.LoadData(openFileDialog.FileName))
+                {
+                    MessageBox.Show("Загрузка прошла успешно",
+                    "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshListBoxItems();
+                }
+                else
+                {
+                    MessageBox.Show("Не загрузилось", "Результат",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            RefreshListBoxItems();
   }
 }

@@ -46,10 +46,17 @@
       labelCollectionName = new Label();
       comboBoxSelectorCompany = new ComboBox();
       pictureBox = new PictureBox();
+      menuStrip = new MenuStrip();
+      FileToolStripMenuItem = new ToolStripMenuItem();
+      saveToolStripMenuItem = new ToolStripMenuItem();
+      loadToolStripMenuItem = new ToolStripMenuItem();
+      saveFileDialog = new SaveFileDialog();
+      openFileDialog = new OpenFileDialog();
       groupBoxTools.SuspendLayout();
       panelCompanyTools.SuspendLayout();
       panelStorage.SuspendLayout();
       ((System.ComponentModel.ISupportInitialize)pictureBox).BeginInit();
+      menuStrip.SuspendLayout();
       SuspendLayout();
       // 
       // groupBoxTools
@@ -59,9 +66,9 @@
       groupBoxTools.Controls.Add(panelStorage);
       groupBoxTools.Controls.Add(comboBoxSelectorCompany);
       groupBoxTools.Dock = DockStyle.Right;
-      groupBoxTools.Location = new Point(607, 0);
+      groupBoxTools.Location = new Point(607, 24);
       groupBoxTools.Name = "groupBoxTools";
-      groupBoxTools.Size = new Size(194, 588);
+      groupBoxTools.Size = new Size(194, 564);
       groupBoxTools.TabIndex = 0;
       groupBoxTools.TabStop = false;
       groupBoxTools.Text = " Инструменты";
@@ -74,8 +81,8 @@
       panelCompanyTools.Controls.Add(buttonGoToCheck);
       panelCompanyTools.Controls.Add(buttonRemoveAirplane);
       panelCompanyTools.Dock = DockStyle.Bottom;
-      panelCompanyTools.Enabled = false;
-      panelCompanyTools.Location = new Point(3, 335);
+      //panelCompanyTools.Enabled = false;
+      panelCompanyTools.Location = new Point(3, 311);
       panelCompanyTools.Name = "panelCompanyTools";
       panelCompanyTools.Size = new Size(188, 250);
       panelCompanyTools.TabIndex = 8;
@@ -241,12 +248,53 @@
       // pictureBox
       // 
       pictureBox.Dock = DockStyle.Fill;
-            pictureBox.Enabled = false;
-      pictureBox.Location = new Point(0, 0);
+      pictureBox.Enabled = false;
+      pictureBox.Location = new Point(0, 24);
       pictureBox.Name = "pictureBox";
-      pictureBox.Size = new Size(607, 588);
+      pictureBox.Size = new Size(607, 564);
       pictureBox.TabIndex = 1;
       pictureBox.TabStop = false;
+      // 
+      // menuStrip
+      // 
+      menuStrip.Items.AddRange(new ToolStripItem[] { FileToolStripMenuItem });
+      menuStrip.Location = new Point(0, 0);
+      menuStrip.Name = "menuStrip";
+      menuStrip.Size = new Size(801, 24);
+      menuStrip.TabIndex = 2;
+      menuStrip.Text = "menuStrip";
+      // 
+      // FileToolStripMenuItem
+      // 
+      FileToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { saveToolStripMenuItem, loadToolStripMenuItem });
+      FileToolStripMenuItem.Name = "FileToolStripMenuItem";
+      FileToolStripMenuItem.Size = new Size(48, 20);
+      FileToolStripMenuItem.Text = "Файл";
+      // 
+      // saveToolStripMenuItem
+      // 
+      saveToolStripMenuItem.Name = "saveToolStripMenuItem";
+      saveToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.S;
+      saveToolStripMenuItem.Size = new Size(181, 22);
+      saveToolStripMenuItem.Text = "Сохранение";
+      saveToolStripMenuItem.Click += SaveToolStripMenuItem_Click;
+      // 
+      // loadToolStripMenuItem
+      // 
+      loadToolStripMenuItem.Name = "loadToolStripMenuItem";
+      loadToolStripMenuItem.ShortcutKeys = Keys.Control | Keys.L;
+      loadToolStripMenuItem.Size = new Size(181, 22);
+      loadToolStripMenuItem.Text = "Загрузка";
+      loadToolStripMenuItem.Click += LoadToolStripMenuItem_Click;
+      // 
+      // saveFileDialog
+      // 
+      saveFileDialog.Filter = "txt file | *.txt";
+      // 
+      // openFileDialog
+      // 
+      //openFileDialog.FileName = "openFileDialog1";
+      openFileDialog.Filter = "txt file | *.txt";
       // 
       // FormAirplaneCollection
       // 
@@ -255,6 +303,8 @@
       ClientSize = new Size(801, 588);
       Controls.Add(pictureBox);
       Controls.Add(groupBoxTools);
+      Controls.Add(menuStrip);
+      MainMenuStrip = menuStrip;
       Name = "FormAirplaneCollection";
       Text = "Коллекция самолетов";
       groupBoxTools.ResumeLayout(false);
@@ -263,7 +313,10 @@
       panelStorage.ResumeLayout(false);
       panelStorage.PerformLayout();
       ((System.ComponentModel.ISupportInitialize)pictureBox).EndInit();
+      menuStrip.ResumeLayout(false);
+      menuStrip.PerformLayout();
       ResumeLayout(false);
+      PerformLayout();
     }
 
     #endregion
@@ -286,5 +339,11 @@
     private Button buttonCreateCompany;
     private Button buttonDelCollection;
     private Panel panelCompanyTools;
+    private MenuStrip menuStrip;
+    private ToolStripMenuItem FileToolStripMenuItem;
+    private ToolStripMenuItem saveToolStripMenuItem;
+    private ToolStripMenuItem loadToolStripMenuItem;
+    private SaveFileDialog saveFileDialog;
+    private OpenFileDialog openFileDialog;
   }
 }

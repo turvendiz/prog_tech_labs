@@ -18,6 +18,9 @@ public class DrawingMilitaryAirplane : DrawingAirplane
     EntityAirplane = new EntityMilitaryAirplane(speed, weight, bodyColor, additionalColor, engineFirst, engineSecond);
   }
 
+public DrawingMilitaryAirplane(EntityMilitaryAirplane? entityMilitaryAirplane) : base(entityMilitaryAirplane)
+        {
+        }
   public override void DrawTransport(Graphics g)
   {
     if (EntityAirplane == null || EntityAirplane is not EntityMilitaryAirplane militaryAirplane || !_startPosX.HasValue || !_startPosY.HasValue)
