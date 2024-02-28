@@ -1,4 +1,6 @@
 ﻿
+using ProjectAirplane.Exceptions;
+
 namespace ProjectAirplane.CollectionGenericObjects;
 
 /// <summary>
@@ -48,12 +50,12 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
 
   public T? Get(int position)
   {
-    if (position >= 0 && position < _collection.Length)
+    if (position < 0 || position >= _collection.Length)
     {
-      return _collection[position];
+      throw new PositionOutOfCollectionException(position);
     }
 
-    return null;
+    return _collection[position];
   }
 
   public bool Insert(T obj)
@@ -63,6 +65,11 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
       return false;
     }
 
+    int result = _collection.Count(s => s == null);
+    if (result == 0)
+    {
+      throw new CollectionOverflowException(Count);
+    }
     for (int i = 0; i < _collection.Length; i++)
     {
       if (_collection[i] == null)
@@ -77,26 +84,27 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
 
   public bool Insert(T obj, int position)
   {
-if (position >= 0 && position < _collection.Length)
-            {
-                if (_collection[position] == null)
-                {
-                    _collection[position] = obj;
-                    return true;
-                }
+    if (obj == null)
+    {
+      return false;
+    }
+    if (position < 0 || position >= _collection.Length)
+    {
+      throw new PositionOutOfCollectionException(position);
+    }
 
-                for (int i = position + 1; i < _collection.Length; i++)
-                {
-                    if (_collection[i] == null)
-                    {
-                        _collection[i] = obj;
-                        return true;
-                    }
-                }
-            }
+    int result = _collection.Count(s => s == null);
+    if (result == 0)
+    {
+      throw new CollectionOverflowException(Count);
+    }
 
-            return false;
-    /*for (int i = 0; i < _collection.Length; i++)
+    if (_collection[position] == null)
+    {
+      _collection[position] = obj;
+      return true;
+    }
+    for (int i = ++position; i < _collection.Length; i++)
     {
       if (_collection[i] == null)
       {
@@ -104,18 +112,30 @@ if (position >= 0 && position < _collection.Length)
         return true;
       }
     }
-    return false;*/
+    for (int i = --position; i >= 0; i--)
+    {
+      if (_collection[i] == null)
+      {
+        _collection[i] = obj;
+        return true;
+      }
+    }
+    return false;
   }
 
   public bool Remove(int position)
   {
-    if (position >= 0 && position < _collection.Length)
-    {
-      _collection[position] = null;
-      return true;
-    }
+    if (position < 0 || position >= _collection.Length)
 
-    return false;
+    {
+      throw new PositionOutOfCollectionException(position);
+    }
+    if (_collection[position] == null)
+    {
+      throw new ObjectNotFoundException(position);
+    }
+    _collection[position] = null;
+    return true;
   }
 
   public IEnumerable<T?> GetItems()

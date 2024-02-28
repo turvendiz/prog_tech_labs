@@ -1,4 +1,6 @@
-﻿namespace ProjectAirplane.CollectionGenericObjects;
+﻿using ProjectAirplane.Exceptions;
+
+namespace ProjectAirplane.CollectionGenericObjects;
 
 
 /// <summary>
@@ -19,18 +21,19 @@ public class ListGenericObjects<T> : ICollectionGenericObjects<T> where T : clas
 
   public int Count => _collection.Count;
 
-public int MaxCount
-        {
-            get => _maxCount;
-            set
-            {
-                if (value > 0)
-                {
-                    _maxCount = value;
-                }
-            }
-        }
-public CollectionType GetCollectionType => CollectionType.List;
+  public int MaxCount
+  {
+    get => _maxCount;
+    set
+    {
+      if (value > 0)
+      {
+        _maxCount = value;
+      }
+    }
+  }
+
+  public CollectionType GetCollectionType => CollectionType.List;
 
   /// <summary>
   /// Конструктор
@@ -44,7 +47,7 @@ public CollectionType GetCollectionType => CollectionType.List;
   {
     if (position < 0 || position >= _maxCount)
     {
-      return null;
+      throw new PositionOutOfCollectionException(position);
     }
     return _collection[position];
   }
@@ -53,7 +56,7 @@ public CollectionType GetCollectionType => CollectionType.List;
   {
     if (Count == _maxCount)
     {
-      return false;
+      throw new CollectionOverflowException(_maxCount);
     }
     _collection.Add(obj);
     return true;
@@ -61,9 +64,13 @@ public CollectionType GetCollectionType => CollectionType.List;
 
   public bool Insert(T obj, int position)
   {
-    if (position < 0 || position >= _maxCount || Count == _maxCount)
+    if (position < 0 || position >= _maxCount)
     {
       return false;
+    }
+    if (Count == _maxCount)
+    {
+      throw new CollectionOverflowException(_maxCount);
     }
     _collection.Insert(position, obj);
     return true;
@@ -71,19 +78,19 @@ public CollectionType GetCollectionType => CollectionType.List;
 
   public bool Remove(int position)
   {
-    if (_collection.Count == 0 || position < 0 || position >= _collection.Count)
+    if (/*_collection.Count == 0 || position < 0 || */position > _collection.Count)
     {
-      return false;
+      throw new PositionOutOfCollectionException(position);
     }
     _collection.RemoveAt(position);
     return true;
   }
 
-        public IEnumerable<T?> GetItems()
-        {
-            for (int i = 0; i < _collection.Count; ++i)
-            {
-                yield return _collection[i];
-            }
-        }
+  public IEnumerable<T?> GetItems()
+  {
+    for (int i = 0; i < _collection.Count; ++i)
+    {
+      yield return _collection[i];
+    }
+  }
 }

@@ -81,16 +81,15 @@
       panelCompanyTools.Controls.Add(buttonGoToCheck);
       panelCompanyTools.Controls.Add(buttonRemoveAirplane);
       panelCompanyTools.Dock = DockStyle.Bottom;
-      //panelCompanyTools.Enabled = false;
-      panelCompanyTools.Location = new Point(3, 311);
+      panelCompanyTools.Location = new Point(3, 332);
       panelCompanyTools.Name = "panelCompanyTools";
-      panelCompanyTools.Size = new Size(188, 250);
+      panelCompanyTools.Size = new Size(188, 229);
       panelCompanyTools.TabIndex = 8;
       // 
       // buttonAddAirplane
       // 
       buttonAddAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonAddAirplane.Location = new Point(6, 10);
+      buttonAddAirplane.Location = new Point(9, 16);
       buttonAddAirplane.Name = "buttonAddAirplane";
       buttonAddAirplane.Size = new Size(170, 36);
       buttonAddAirplane.TabIndex = 1;
@@ -101,7 +100,7 @@
       // buttonRefresh
       // 
       buttonRefresh.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonRefresh.Location = new Point(6, 207);
+      buttonRefresh.Location = new Point(6, 188);
       buttonRefresh.Name = "buttonRefresh";
       buttonRefresh.Size = new Size(170, 36);
       buttonRefresh.TabIndex = 5;
@@ -112,7 +111,7 @@
       // maskedTextBox
       // 
       maskedTextBox.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      maskedTextBox.Location = new Point(6, 94);
+      maskedTextBox.Location = new Point(6, 75);
       maskedTextBox.Mask = "00";
       maskedTextBox.Name = "maskedTextBox";
       maskedTextBox.Size = new Size(170, 23);
@@ -122,7 +121,7 @@
       // buttonGoToCheck
       // 
       buttonGoToCheck.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonGoToCheck.Location = new Point(6, 165);
+      buttonGoToCheck.Location = new Point(6, 146);
       buttonGoToCheck.Name = "buttonGoToCheck";
       buttonGoToCheck.Size = new Size(170, 36);
       buttonGoToCheck.TabIndex = 4;
@@ -133,7 +132,7 @@
       // buttonRemoveAirplane
       // 
       buttonRemoveAirplane.Anchor = AnchorStyles.Top | AnchorStyles.Left | AnchorStyles.Right;
-      buttonRemoveAirplane.Location = new Point(6, 123);
+      buttonRemoveAirplane.Location = new Point(6, 104);
       buttonRemoveAirplane.Name = "buttonRemoveAirplane";
       buttonRemoveAirplane.Size = new Size(170, 36);
       buttonRemoveAirplane.TabIndex = 3;
@@ -293,7 +292,6 @@
       // 
       // openFileDialog
       // 
-      //openFileDialog.FileName = "openFileDialog1";
       openFileDialog.Filter = "txt file | *.txt";
       // 
       // FormAirplaneCollection

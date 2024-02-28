@@ -21,35 +21,24 @@ public static class ExtentionDrawningAirplane
   {
     string[] strs = info.Split(_separatorForObject);
     EntityAirplane? airplane = EntityMilitaryAirplane.CreateEntityMilitaryAirplane(strs);
-    /*if (aircraft != null)
+
+    DrawingAirplane? drawAirplane = null;
+
+    if (airplane != null)
     {
-      return new DrawingMilitaryAirplane(aircraft);
+      EntityMilitaryAirplane? militaryAirplane = (EntityMilitaryAirplane?)airplane;
+      drawAirplane = new DrawingMilitaryAirplane(militaryAirplane);
+    }
+    else
+    {
+      airplane = EntityAirplane.CreateEntityAirplane(strs);
+      if (airplane != null)
+      {
+        drawAirplane = new DrawingAirplane(airplane);
+      }
     }
 
-    aircraft = EntityAirplane.CreateEntityAircraft(strs);
-    if (aircraft != null)
-    {
-      return new DrawingAirplane(aircraft);
-    }
-
-    return null;*/
-DrawingAirplane? drawAirplane = null;
-
-            if (airplane != null)
-            {
-                EntityMilitaryAirplane? militaryAirplane = (EntityMilitaryAirplane?)airplane;
-                drawAirplane = new DrawingMilitaryAirplane(militaryAirplane);
-            }
-            else
-            {
-                airplane = EntityAirplane.CreateEntityAirplane(strs);
-                if (airplane != null)
-                {
-                    drawAirplane = new DrawingAirplane(airplane);
-                }
-            }
-
-            return drawAirplane;
+    return drawAirplane;
   }
 
   /// <summary>

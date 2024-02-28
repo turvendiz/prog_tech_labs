@@ -1,4 +1,5 @@
 ﻿using ProjectAirplane.Drawings;
+using ProjectAirplane.Exceptions;
 using System.Text;
 
 namespace ProjectAirplane.CollectionGenericObjects;
@@ -49,17 +50,17 @@ public class StorageCollection<T> where T : DrawingAirplane
   /// <param name="collectionType">Тип коллекции</param>
   public void AddCollection(string name, CollectionType collectionType)
   {
-            if (name == null || Keys.Contains(name))
+    if (name == null || Keys.Contains(name))
     {
       return;
     }
     switch (collectionType)
     {
       case CollectionType.Massive:
-                    _storages.Add(name, new MassiveGenericObjects<T>());
+        _storages.Add(name, new MassiveGenericObjects<T>());
         break;
       case CollectionType.List:
-                    _storages.Add(name, new ListGenericObjects<T>());
+        _storages.Add(name, new ListGenericObjects<T>());
         break;
       case CollectionType.None:
         break;
@@ -70,37 +71,31 @@ public class StorageCollection<T> where T : DrawingAirplane
   /// Удаление коллекции
   /// </summary>
   /// <param name="name">Название коллекции</param>
-        public void DelCollection(string name)
+  public void DelCollection(string name)
   {
-            if (name == null || !Keys.Contains(name))
+    if (name == null || !Keys.Contains(name))
     {
       return;
     }
-            _storages.Remove(name);
-        }
+    _storages.Remove(name);
+  }
 
-        /// <summary>
-        /// Доступ к коллекции
-        /// </summary>
-        /// <param name="name">Название коллекции</param>
-        /// <returns></returns>
-        public ICollectionGenericObjects<T>? this[string name]
-        {
-            get
-            {
-                return _storages.GetValueOrDefault(name, null);
-            }
-        }
+  /// <summary>
+  /// Доступ к коллекции
+  /// </summary>
+  /// <param name="name">Название коллекции</param>
+  /// <returns></returns>
+  public ICollectionGenericObjects<T>? this[string name] => _storages.GetValueOrDefault(name, null);
   /// <summary>
   /// Сохранение информации по самолетам в хранилище в файл
   /// </summary>
   /// <param name="filename">Путь и имя файла</param>
-        /// <returns>true - сохранение прошло успешно, false - ошибка при сохранении данных</returns>
-  public bool SaveData(string filename)
+  /// <returns>true - сохранение прошло успешно, false - ошибка при сохранении данных</returns>
+  public void SaveData(string filename)
   {
     if (_storages.Count == 0)
     {
-                return false;
+      throw new Exception("В хранилище отсутствуют коллекции для сохранения");
     }
 
     if (File.Exists(filename))
@@ -122,8 +117,8 @@ public class StorageCollection<T> where T : DrawingAirplane
 
       sb.Append(value.Key);
       sb.Append(_separatorForKeyValue);
-                sb.Append(value.Value.GetCollectionType);
-                sb.Append(_separatorForKeyValue);
+      sb.Append(value.Value.GetCollectionType);
+      sb.Append(_separatorForKeyValue);
       sb.Append(value.Value.MaxCount);
       sb.Append(_separatorForKeyValue);
 
@@ -143,19 +138,17 @@ public class StorageCollection<T> where T : DrawingAirplane
     using FileStream fs = new(filename, FileMode.Create);
     byte[] info = new UTF8Encoding(true).GetBytes(sb.ToString());
     fs.Write(info, 0, info.Length);
-            return true;
   }
 
   /// <summary>
   /// Загрузка информации по автомобилям в хранилище из файла
   /// </summary>
   /// <param name="filename">Путь и имя файла</param>
-        /// <returns>true - загрузка прошла успешно, false - ошибка при загрузке данных</returns>
-  public bool LoadData(string filename)
+  public void LoadData(string filename)
   {
     if (!File.Exists(filename))
     {
-                return false;
+      throw new Exception("Файл не существует");
     }
 
     string bufferTextFromFile = "";
@@ -172,50 +165,54 @@ public class StorageCollection<T> where T : DrawingAirplane
     string[] strs = bufferTextFromFile.Split(new char[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
     if (strs == null || strs.Length == 0)
     {
-                return false;
+      throw new Exception("В файле нет данных");
     }
 
     if (!strs[0].Equals(_collectionKey))
     {
-   //если нет такой записи, то это не те данные
-                return false;
+      //если нет такой записи, то это не те данные
+      throw new Exception("В файле неверные данные");
     }
 
     _storages.Clear();
     foreach (string data in strs)
     {
       string[] record = data.Split(_separatorForKeyValue, StringSplitOptions.RemoveEmptyEntries);
-                if (record.Length != 4)
+      if (record.Length != 4)
       {
         continue;
       }
 
-CollectionType collectionType = (CollectionType)Enum.Parse(typeof(CollectionType), record[1]);
-                ICollectionGenericObjects<T>? collection = StorageCollection<T>.CreateCollection(collectionType);
-      if (collection == null)
-      {
-                    return false;
-      }
+      CollectionType collectionType = (CollectionType)Enum.Parse(typeof(CollectionType), record[1]);
+      ICollectionGenericObjects<T>? collection = StorageCollection<T>.CreateCollection(collectionType) ??
+          throw new Exception("Не удалось определить тип коллекции:" + record[1]);
 
-                collection.MaxCount = Convert.ToInt32(record[2]);
+      collection.MaxCount = Convert.ToInt32(record[2]);
 
-                string[] set = record[3].Split(_separatorItems, StringSplitOptions.RemoveEmptyEntries);
+      string[] set = record[3].Split(_separatorItems, StringSplitOptions.RemoveEmptyEntries);
       foreach (string elem in set)
       {
-        if (elem?.CreateDrawingAirplane() is T car)
-                    {
-                        if (!collection.Insert(car))
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                _storages.Add(record[0], collection);
+        if (elem?.CreateDrawingAirplane() is T airplane)
+        {
+          try
+          {
+            if (!collection.Insert(airplane))
+            {
+              throw new Exception("Объект не удалось добавить в коллекцию: " + record[3]);
             }
-
-            return true;
+          }
+          catch (CollectionOverflowException ex)
+          {
+            throw new Exception("Коллекция переполнена", ex);
+          }
         }
+      }
+
+      _storages.Add(record[0], collection);
+    }
+
+
+  }
 
   /// <summary>
   /// Создание коллекции по типу

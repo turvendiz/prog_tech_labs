@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using ProjectAirplane.CollectionGenericObjects;
+﻿using ProjectAirplane.CollectionGenericObjects;
 using ProjectAirplane.Drawings;
+using System.Windows.Forms;
 
 namespace ProjectAirplane;
 
@@ -20,18 +20,12 @@ public partial class FormAirplaneCollection : Form
   private AbstractCompany? _company = null;
 
   /// <summary>
-  /// Логер
-  /// </summary>
-  private readonly ILogger _logger;
-
-  /// <summary>
   /// Конструктор
   /// </summary>
-  public FormAirplaneCollection(ILogger<FormAirplaneCollection> logger)
+  public FormAirplaneCollection()
   {
     InitializeComponent();
     _storageCollection = new();
-    _logger = logger;
   }
 
   /// <summary>
@@ -68,17 +62,14 @@ public partial class FormAirplaneCollection : Form
       return;
     }
 
-    try
+    if (_company + airplane)
     {
-      bool isSet = _company + airplane;
       MessageBox.Show("Объект добавлен");
       pictureBox.Image = _company.Show();
-      _logger.LogInformation("Добавлен объект: {airplane}", saveFileDialog.FileName);
     }
-    catch (Exception ex)
+    else
     {
-      MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
-      _logger.LogError("Ошибка: {Message}", ex.Message);
+      MessageBox.Show("Не удалось добавить объект");
     }
   }
 
@@ -100,18 +91,14 @@ public partial class FormAirplaneCollection : Form
     }
 
     int pos = Convert.ToInt32(maskedTextBox.Text);
-
-    try
+    if (_company - pos)
     {
-      bool isRemove = _company - pos;
       MessageBox.Show("Объект удален");
       pictureBox.Image = _company.Show();
-      _logger.LogInformation("Удален объект с индексом: {pos}", saveFileDialog.FileName);
     }
-    catch (Exception ex)
+    else
     {
-      MessageBox.Show(ex.Message);
-      _logger.LogError("Ошибка: {Message}", ex.Message);
+      MessageBox.Show("Не удалось удалить объект");
     }
   }
 
@@ -265,20 +252,17 @@ public partial class FormAirplaneCollection : Form
   /// <param name="e"></param>
   private void SaveToolStripMenuItem_Click(object sender, EventArgs e)
   {
-    if (saveFileDialog.ShowDialog() == DialogResult.OK)
-    {
-      try
-      {
-        _storageCollection.SaveData(saveFileDialog.FileName);
-        MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        _logger.LogInformation("Сохранение в файл: {filename}", saveFileDialog.FileName);
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show(ex.Message, "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        _logger.LogError("Ошибка: {Message}", ex.Message);
-      }
-    }
+            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (_storageCollection.SaveData(saveFileDialog.FileName))
+                {
+                    MessageBox.Show("Сохранение прошло успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    MessageBox.Show("Не сохранилось", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
   }
 
   /// <summary>
@@ -288,21 +272,20 @@ public partial class FormAirplaneCollection : Form
   /// <param name="e"></param>
   private void LoadToolStripMenuItem_Click(object sender, EventArgs e)
   {
-    if (openFileDialog.ShowDialog() == DialogResult.OK)
-    {
-      try
-      {
-        _storageCollection.LoadData(openFileDialog.FileName);
-        MessageBox.Show("Загрузка прошла успешно", "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        _logger.LogInformation("Загрузка файла: {filename}", openFileDialog.FileName);
-      }
-      catch (Exception ex)
-      {
-        MessageBox.Show("Не загрузилось", "Результат",
-        MessageBoxButtons.OK, MessageBoxIcon.Error);
-        _logger.LogError("Ошибка: {Message}", ex.Message);
-      }
-    }
-    RefreshListBoxItems();
+if (openFileDialog.ShowDialog() == DialogResult.OK)
+            {
+                if (_storageCollection.LoadData(openFileDialog.FileName))
+                {
+                    MessageBox.Show("Загрузка прошла успешно",
+                    "Результат", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    RefreshListBoxItems();
+                }
+                else
+                {
+                    MessageBox.Show("Не загрузилось", "Результат",
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            RefreshListBoxItems();
   }
 }

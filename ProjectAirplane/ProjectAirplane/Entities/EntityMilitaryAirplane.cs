@@ -51,8 +51,6 @@ public class EntityMilitaryAirplane : EntityAirplane
   /// <returns></returns>
   public override string[] GetStringRepresentation()
   {
-    //return new[] { nameof(EntityAirplane), Speed.ToString(), Weight.ToString(), BodyColor.Name };
-
     return new[] { nameof(EntityMilitaryAirplane), Speed.ToString(), Weight.ToString(), BodyColor.Name, AdditionalColor.Name,
                 EngineFirst.ToString(), EngineSecond.ToString()};
   }

@@ -96,10 +96,10 @@ public class DrawingAirplane
     _drawingAirplaneHeight = drawningAirplaneHeight;
   }
 
-public DrawingAirplane(EntityAirplane? entityAirplane)
-        {
-            EntityAirplane = entityAirplane;
-        }
+  public DrawingAirplane(EntityAirplane? entityAirplane)
+  {
+    EntityAirplane = entityAirplane;
+  }
 
   /// <summary>
   /// Установка границ поля
