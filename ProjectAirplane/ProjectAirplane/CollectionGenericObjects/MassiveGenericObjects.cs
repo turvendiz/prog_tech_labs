@@ -69,6 +69,10 @@ public class MassiveGenericObjects<T> : ICollectionGenericObjects<T> where T : c
 
   public bool Insert(T obj, int position)
   {
+    if (position < 0 || position >= Count) 
+    {
+        return false;
+    }
     for (int i = 0; i < _collection.Length; i++)
     {
       if (_collection[i] == null)
