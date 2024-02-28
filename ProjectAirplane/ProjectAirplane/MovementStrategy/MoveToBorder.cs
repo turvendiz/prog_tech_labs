@@ -5,52 +5,50 @@
 /// </summary>
 public class MoveToBorder : AbstractStrategy
 {
-  protected override bool IsTargetDestination()
-  {
-    ObjectParameters? objParams = GetObjectParameters;
-    if (objParams == null)
+    protected override bool IsTargetDestination()
     {
-      return false;
+        ObjectParameters? objParams = GetObjectParameters;
+        if (objParams == null)
+        {
+            return false;
+        }
+
+        return objParams.RightBorder <= FieldWidth && objParams.RightBorder + GetStep() >= FieldWidth &&
+                objParams.DownBorder <= FieldHeight && objParams.DownBorder + GetStep() >= FieldHeight;
     }
 
-    return objParams.ObjectMiddleHorizontal - GetStep() <= FieldWidth / 2
-        && objParams.ObjectMiddleHorizontal + GetStep() >= FieldWidth / 2
-        && objParams.ObjectMiddleVertical - GetStep() <= FieldHeight / 2
-        && objParams.ObjectMiddleVertical + GetStep() >= FieldHeight / 2;
-  }
-
-  protected override void MoveToTarget()
-  {
-    ObjectParameters? objParams = GetObjectParameters;
-    if (objParams == null)
+    protected override void MoveToTarget()
     {
-      return;
-    }
+        ObjectParameters? objParams = GetObjectParameters;
+        if (objParams == null)
+        {
+            return;
+        }
 
-    int diffX = objParams.RightBorder - FieldWidth;
-    if (Math.Abs(diffX) > GetStep())
-    {
-      if (diffX > 0)
-      {
-        MoveLeft();
-      }
-      else
-      {
-        MoveRight();
-      }
-    }
+        int diffX = objParams.RightBorder - FieldWidth;
+        if (Math.Abs(diffX) > GetStep())
+        {
+            if (diffX > 0)
+            {
+                MoveLeft();
+            }
+            else
+            {
+                MoveRight();
+            }
+        }
 
-    int diffY = objParams.DownBorder - FieldHeight;
-    if (Math.Abs(diffY) > GetStep())
-    {
-      if (diffY > 0)
-      {
-        MoveUp();
-      }
-      else
-      {
-        MoveDown();
-      }
+        int diffY = objParams.DownBorder - FieldHeight;
+        if (Math.Abs(diffY) > GetStep())
+        {
+            if (diffY > 0)
+            {
+                MoveUp();
+            }
+            else
+            {
+                MoveDown();
+            }
+        }
     }
-  }
 }
